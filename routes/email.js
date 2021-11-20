@@ -28,12 +28,10 @@ router.post("/otp", async (req, res, next) => {
     const encoded = await encode(details);
     sendMail(otp, details, (err, message) => {
       if (err) {
-        console.log(err.message);
         return next(err.message);
       } else return res.json(encoded);
     });
   } catch (err) {
-    console.log(err);
     return next(err.message);
   }
 });

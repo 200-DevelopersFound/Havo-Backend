@@ -27,7 +27,7 @@ exports.connect = () => {
       console.log("DATABASE CONNECTION SUCCESSFULL");
     })
     .catch((error) => {
-      console.log("DATABASE CONNECtiON FAILURE");
+      console.log("DATABASE CONNECTION FAILURE");
       console.error(error);
       process.exit(1);
     });
