@@ -4,6 +4,7 @@ const logger = require("morgan");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
+const emailRouter = require("./routes/email");
 
 const app = express();
 
@@ -16,5 +17,10 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/email", emailRouter);
+
+app.use((err, _req, res, _next) => {
+  res.status(500).json({ error: err.message });
+});
 
 module.exports = app;
