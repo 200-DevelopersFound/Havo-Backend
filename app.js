@@ -20,7 +20,7 @@ app.use("/users", usersRouter);
 app.use("/email", emailRouter);
 
 app.use((err, _req, res, _next) => {
-  res.status(500).json({ error: err.message });
+  res.status(500).json({ error: err });
 });
 
 module.exports = app;
