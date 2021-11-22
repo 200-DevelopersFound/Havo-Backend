@@ -4,7 +4,8 @@ const router = express.Router();
 
 /* GET home page. */
 router.get("/", (_req, res, _next) => {
-  res.render("index", { title: "Express" });
+  console.log("test");
+  res.render("home", { link: "http://64da-103-136-83-145.ngrok.io" });
 });
 
 router.get("/send", (_req, res, next) => {
