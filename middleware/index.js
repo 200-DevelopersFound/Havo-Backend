@@ -1,17 +1,43 @@
 const jwt = require("jsonwebtoken");
+const BlacklistToken = require("../models/blackestToken");
+const UserLogin = require("../models/userLogins");
 
-const authToken = (req, res, next) => {
-  const token =
-    req.body.token || req.query.token || req.headers["x-access-token"];
+const authToken = async (req, res, next) => {
+  const authHeader = req.headers["authorization"];
 
-  if (!token) return res.status(403).send("TOKEN FOUND");
+  const bearer = authHeader && authHeader.split(" ")[0];
+  if (bearer != "Bearer") return res.sendStatus(401);
 
-  try {
-    req.user = jwt.verify(token, process.env.TOKEN_KEY);
-  } catch (err) {
-    return res.status(401).send("INVALID TOKEN");
-  }
-  return next();
+  const token = authHeader && authHeader.split(" ")[1];
+  if (token == null) return res.sendStatus(401);
+
+  // const dbUser = await User.findOne({ email });
+  BlacklistToken.findOne({ token }).then((tokenFound) => {
+    if (tokenFound) {
+      return res.status(401).json({
+        Status: "Failure",
+        Details: "Token blacklisted. Cannot use this token.",
+      });
+    } else {
+      jwt.verify(token, process.env.TOKEN_KEY, async (err, payload) => {
+        if (err) return res.sendStatus(403);
+        if (payload) {
+          const login = await UserLogin.findOne({
+            userId: payload.id,
+            tokenId: payload.tokenId,
+          });
+          if (login.tokenDeleted == true) {
+            const blacklist_token = Blacklist.create({
+              token: token,
+            });
+            return res.sendStatus(401);
+          }
+        }
+        req.user = payload;
+        next();
+      });
+    }
+  });
 };
 
 module.exports = authToken;

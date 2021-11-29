@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
+const UserLogins = require("../models/userLogin");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs/dist/bcrypt");
-const user = require("../models/user");
+const cid = require("custom-id");
+const createToken = require("../util/token");
 
 /* GET users listing. */
 router.get("/", (req, res) => {
@@ -33,14 +35,16 @@ router.post("/create", async (req, res) => {
       password: await bcrypt.hash(password, 10),
     });
 
-    const token = jwt.sign(
-      { user_id: newUser._id, email },
-      process.env.TOKEN_KEY,
-      { expiresIn: "2h" }
-    );
-    user.token = token;
+    req.user = newUser;
+    req.auth = { id: req.user._id, register: true };
+    req.token = createToken(req);
 
-    res.status(201).json({ token: token });
+    const responseOb = {
+      auth: true,
+      token: req.token,
+      message: "User found and Logged in",
+    };
+    return res.status(200).json(responseOb);
   } catch (err) {
     return res.status(400).send(err);
   }
@@ -59,13 +63,19 @@ router.post("/login", async (req, res) => {
     const dbUser = await User.findOne({ email });
 
     if (dbUser && (await bcrypt.compare(password, dbUser.password))) {
-      const token = jwt.sign(
-        { user_id: dbUser._id, email },
-        process.env.TOKEN_KEY,
-        { expiresIn: "2h" }
-      );
-      user.token = token;
-      res.status(200).json(token);
+      req.user = userexists;
+      req.auth = {
+        id: req.user.id,
+        register: false,
+      };
+      req.token = createToken(req);
+
+      const responseOb = {
+        auth: true,
+        token: req.token,
+        message: "User found and Logged in",
+      };
+      return res.status(200).json(responseOb);
     } else {
       res.status(400).send("Invalid Credentials");
     }
