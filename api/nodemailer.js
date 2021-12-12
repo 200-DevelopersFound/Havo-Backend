@@ -12,11 +12,11 @@ const transporter = nodemailer.createTransport({
     pass: PASSWORD,
   },
 });
-const sendMail = (otp, obj, callback) => {
+const sendMail = (email, otp, obj, callback) => {
   transporter.sendMail(
     {
       from: "200shreyans@gmail.com",
-      to: "200shreyans@gmail.com",
+      to: email,
       subject: "Text-Email",
       text: "Your OTP is " + otp + "\n" + JSON.stringify(obj),
     },

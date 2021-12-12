@@ -26,7 +26,7 @@ router.post("/otp", async (req, res, next) => {
       check: email,
     };
     const encoded = await encode(details);
-    sendMail(otp, details, (err, message) => {
+    sendMail(email, otp, details, (err, message) => {
       if (err) {
         return next(err.message);
       } else return res.json({ verification_key: encoded });
