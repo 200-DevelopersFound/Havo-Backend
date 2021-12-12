@@ -37,7 +37,7 @@ router.post("/create", async (req, res) => {
     );
     user.token = token;
 
-    res.status(201).json(token);
+    res.status(201).json({ token: token });
   } catch (err) {
     return res.status(400).send(err);
   }
