@@ -29,7 +29,7 @@ router.post("/otp", async (req, res, next) => {
     sendMail(otp, details, (err, message) => {
       if (err) {
         return next(err.message);
-      } else return res.json(encoded);
+      } else return res.json({ verification_key: encoded });
     });
   } catch (err) {
     return next(err.message);
@@ -39,6 +39,7 @@ router.post("/otp", async (req, res, next) => {
 router.post("/verify/otp", async (req, res, next) => {
   try {
     let currentdate = new Date();
+    // verificationKey, otp, email
     const { verification_key, otp, check } = req.body;
     if (!verification_key) {
       return res.status(400).send("verification_key not provided");
