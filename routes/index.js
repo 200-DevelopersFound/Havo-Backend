@@ -5,7 +5,7 @@ const router = express.Router();
 /* GET home page. */
 router.get("/", (_req, res, _next) => {
   console.log("test");
-  res.render("home", { link: "http://64da-103-136-83-145.ngrok.io" });
+  res.render("home", { link: "https://handwritingbackend.herokuapp.com" });
 });
 
 router.get("/send", (_req, res, next) => {
