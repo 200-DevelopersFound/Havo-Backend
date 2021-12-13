@@ -21,8 +21,11 @@ router.post("/create", async (req, res) => {
     else if (!email) return res.status(400).send("Email not Found");
     else if (!password) return res.status(400).send("Password not Found");
 
-    const dbUser = await User.findOne({ email });
-    if (dbUser) return res.status(409).send("User already found.");
+    const dbUserEmail = await User.findOne({ email });
+    if (dbUserEmail) return res.status(409).send("User already found.");
+
+    const dbUserName = await User.findOne({ username });
+    if (dbUserName) return res.status(409).send("Username already used.");
 
     const newUser = await User.create({
       username,
