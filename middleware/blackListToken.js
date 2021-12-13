@@ -11,17 +11,43 @@ const blacklistToken = (req, res, next) => {
   const token = authHeader && authHeader.split(" ")[1];
   if (token == null) return res.sendStatus(401);
 
-  Blacklist.findOne({ token: token }).then(found => {
+  Blacklist.findOne({ token: token }).then((found) => {
     if (found) {
-      jwt.verify(token, process.env.TOKEN_KEY, async(user, payload) => {
-        const login = UserLogin.findOne({userId : payload.id, tokenId: payload.tokenId});
+      jwt.verify(token, process.env.TOKEN_KEY, async (user, payload) => {
+        const login = await UserLogin.findOne({
+          userId: payload.id,
+          tokenId: payload.tokenId,
+        });
         login.loggedOut = true;
         login.tokenDeleted = true;
-        login.save();
+        await login.save();
       });
-      return res.status(401).json({Status: "Failure", message: "Token Blacklisted"});
+      return res
+        .status(401)
+        .json({ Status: "Failure", message: "Token Blacklisted" });
     } else {
-      // token not found to be added 
+      jwt.verify(token, process.env.TOKEN_KEY, async (user, payload) => {
+        if (err) res.sendStatus(401);
+        if (payload) {
+          const userLogin = await UserLogin.findOne({
+            userId: payload.id,
+            tokenId: payload.tokenId,
+          });
+
+          if (userLogin.tokenDeleted) {
+            userLogin.loggedOut = true;
+          } else {
+            userLogin.loggedOut = true;
+            userLogin.tokenDeleted = true;
+          }
+
+          await login.save();
+          const blacklistToken = Blacklist.create({ token: token });
+        }
+        next();
+      });
     }
   });
 };
+
+module.exports = blacklistToken;

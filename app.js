@@ -5,6 +5,7 @@ const logger = require("morgan");
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const emailRouter = require("./routes/email");
+const loginRouter = require("./routes/loginActivity");
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.set("view engine", "ejs");
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/email", emailRouter);
+app.use("/user/logins", loginRouter);
 
 app.use((err, _req, res, _next) => {
   console.log(err);

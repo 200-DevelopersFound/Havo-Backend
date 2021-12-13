@@ -90,4 +90,5 @@ router.post("/verify/otp", async (req, res, next) => {
     return next(err.message);
   }
 });
+
 module.exports = router;
