@@ -16,7 +16,7 @@ const blacklistToken = (req, res, next) => {
       jwt.verify(token, process.env.TOKEN_KEY, async (user, payload) => {
         const login = await UserLogin.findOne({
           userId: payload.id,
-          tokenId: payload.tokenId,
+          tokenId: payload.token_id,
         });
         login.loggedOut = true;
         login.tokenDeleted = true;
@@ -26,12 +26,12 @@ const blacklistToken = (req, res, next) => {
         .status(401)
         .json({ Status: "Failure", message: "Token Blacklisted" });
     } else {
-      jwt.verify(token, process.env.TOKEN_KEY, async (user, payload) => {
+      jwt.verify(token, process.env.TOKEN_KEY, async (err, payload) => {
         if (err) res.sendStatus(401);
         if (payload) {
           const userLogin = await UserLogin.findOne({
             userId: payload.id,
-            tokenId: payload.tokenId,
+            tokenId: payload.token_id,
           });
 
           if (userLogin.tokenDeleted) {
@@ -41,7 +41,7 @@ const blacklistToken = (req, res, next) => {
             userLogin.tokenDeleted = true;
           }
 
-          await login.save();
+          await userLogin.save();
           const blacklistToken = Blacklist.create({ token: token });
         }
         next();

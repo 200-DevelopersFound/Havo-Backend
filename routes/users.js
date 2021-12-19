@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs/dist/bcrypt");
 const cid = require("custom-id-new");
 const createToken = require("../util/token");
-
+const blacklistToken = require("../middleware/blackListToken");
 /* GET users listing. */
 router.get("/", (req, res) => {
   res.send("respond with a resource");
@@ -84,6 +84,10 @@ router.post("/login", async (req, res) => {
     console.log(err);
     return res.status(400).send(err);
   }
+});
+
+router.delete("/logout", blacklistToken, async (req, res) => {
+  return res.json({ message: "Token blacklisted. User logged out." });
 });
 
 module.exports = router;
