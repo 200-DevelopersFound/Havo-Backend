@@ -1,12 +1,12 @@
 const jwt = require("jsonwebtoken");
-const BlacklistToken = require("../models/blackestToken");
-const UserLogin = require("../models/userLogins");
+const BlacklistToken = require("../models/blacklistToken");
+const UserLogin = require("../models/userLogin");
 
 const authToken = async (req, res, next) => {
   const authHeader = req.headers["authorization"];
 
-  const bearer = authHeader && authHeader.split(" ")[0];
-  if (bearer != "Bearer") return res.sendStatus(401);
+  // const bearer = authHeader && authHeader.split(" ")[0];
+  // if (bearer != "Bearer") return res.sendStatus(401);
 
   const token = authHeader && authHeader.split(" ")[1];
   if (token == null) return res.sendStatus(401);
@@ -24,10 +24,10 @@ const authToken = async (req, res, next) => {
         if (payload) {
           const login = await UserLogin.findOne({
             userId: payload.id,
-            tokenId: payload.tokenId,
+            tokenId: payload.token_id,
           });
           if (login.tokenDeleted == true) {
-            const blacklist_token = Blacklist.create({
+            const blacklist_token = BlacklistToken.create({
               token: token,
             });
             return res.sendStatus(401);

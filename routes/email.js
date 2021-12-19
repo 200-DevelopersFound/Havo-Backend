@@ -6,6 +6,7 @@ const router = express.Router();
 const OTP = require("../models/otp");
 const date = require("../util/date");
 
+// SEND OTP - /email/otp
 router.post("/otp", async (req, res, next) => {
   try {
     const { email } = req.body;
@@ -36,6 +37,7 @@ router.post("/otp", async (req, res, next) => {
   }
 });
 
+// VERIFY OTP - /email/verify/otp
 router.post("/verify/otp", async (req, res, next) => {
   try {
     let currentdate = new Date();

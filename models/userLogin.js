@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const userLoginsSchema = new mongoose.Schema({
-  userId: { type: String, required: true, unique: true },
+  userId: { type: String, required: true },
   loggedOut: { type: Boolean, default: false },
   loggedInAt: { type: Date, default: new Date().getTime() },
   loggedOutAt: { type: Date, default: new Date().getTime() },

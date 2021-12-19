@@ -4,7 +4,6 @@ const router = express.Router();
 
 /* GET home page. */
 router.get("/", (_req, res, _next) => {
-  console.log("test");
   res.render("home", { link: "https://handwritingbackend.herokuapp.com" });
 });
 

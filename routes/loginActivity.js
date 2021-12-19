@@ -4,28 +4,31 @@ const authToken = require("../middleware/index");
 const UserLogin = require("../models/userLogin");
 const User = require("../models/user");
 
-/* Show user login */
-router.get("/show", authToken, async (req, res, next) => {
-  const user = await User.findOne({ id: req.user.id });
+// SHOW ALL LA - /user/logins/show
+router.get("/show", authToken, async (req, res, _next) => {
+  const user = await User.findOne({ _id: req.user.id });
+
   if (user) {
-    const userLogins = await UserLogin.findAll({
+    const userLogins = await UserLogin.find({
       userId: user.id,
       tokenDeleted: false,
-    });
-    const ip =
-      (req.headers["x-forwarded-for"] || "").split(",").pop().trim() ||
-      req.connection.remoteAddress ||
-      req.socket.remoteAddress ||
-      req.connection.socket.remoteAddress;
+    }).lean();
+
+    // const ip =
+    //   (req.headers["x-forwarded-for"] || "").split(",").pop().trim() ||
+    //   req.connection.remoteAddress ||
+    //   req.socket.remoteAddress ||
+    //   req.connection.socket.remoteAddress;
     let current = false;
-    const logins = [];
-    userLogins.forEach(async (userLogin) => {
+    let logins = [];
+    userLogins.forEach((userLogin) => {
       current = false;
-      if (req.user.tokenId == userLogin.tokenId) {
+      if (req.user.token_id == userLogin.tokenId) {
         current = true;
       }
-      let login = userLogin.get({ plain: true });
+      let login = userLogin;
       login.current = current;
+      login["current"] = current;
       logins.push(login);
     });
     return res.status(200).send({ user_logins: logins });
@@ -33,18 +36,20 @@ router.get("/show", authToken, async (req, res, next) => {
   return res.status(400).send("Bad Request");
 });
 
-router.get("/delete/:login_id", authToken, async (req, res, next) => {
-  console.log(req.params.login_id);
-  const user = await User.findOne({ id: req.user.id });
+// DELETE LA ID - /user/logins/delete/:login_id
+router.get("/delete/:login_id", authToken, async (req, res, _next) => {
+  const user = await User.findOne({ _id: req.user.id });
   if (user) {
-    const userLogin = await userLogins.findOne({ id: req.params.loginId });
+    const userLogin = await UserLogin.findOne({
+      tokenId: req.params.login_id,
+    });
     const ip =
       (req.headers["x-forwarded-for"] || "").split(",").pop().trim() ||
       req.connection.remoteAddress ||
       req.socket.remoteAddress ||
       req.connection.socket.remoteAddress;
     let current = false;
-    if (req.user.tokenId == userLogin.tokenId) {
+    if (req.user.token_id == userLogin.tokenId) {
       current = true;
     }
     userLogin.tokenDeleted = true;
@@ -54,20 +59,21 @@ router.get("/delete/:login_id", authToken, async (req, res, next) => {
   return res.status(400).send("Bad Request");
 });
 
-router.get("/delete/all/not-current", authToken, async (req, res, next) => {
-  const user = await User.findOne({ id: req.user.id });
+// DELETE OTHERS - /user/logins/delete/all/not-current
+router.get("/delete/all/not-current", authToken, async (req, res, _next) => {
+  const user = await User.findOne({ _id: req.user.id });
   if (user) {
-    const userLogins = await userLogins.findAll({ userId: user.id });
-    const ip =
-      (req.headers["x-forwarded-for"] || "").split(",").pop().trim() ||
-      req.connection.remoteAddress ||
-      req.socket.remoteAddress ||
-      req.connection.socket.remoteAddress;
+    const userLogins = await UserLogin.find({ userId: user.id });
+    // const ip =
+    //   (req.headers["x-forwarded-for"] || "").split(",").pop().trim() ||
+    //   req.connection.remoteAddress ||
+    //   req.socket.remoteAddress ||
+    //   req.connection.socket.remoteAddress;
     let current = false;
     let logins = [];
     userLogins.forEach(async (userLogin) => {
       current = false;
-      if (req.user.tokenId == userLogin.tokenId) {
+      if (req.user.token_id == userLogin.tokenId) {
         current = true;
       }
       if (current != true) {
@@ -75,7 +81,7 @@ router.get("/delete/all/not-current", authToken, async (req, res, next) => {
         userLogin.loggedOut = true;
         await userLogin.save();
       }
-      let login = userLogin.get({ plain: true });
+      let login = userLogin;
       login.current = current;
       logins.push(login);
     });
@@ -84,10 +90,11 @@ router.get("/delete/all/not-current", authToken, async (req, res, next) => {
   return res.status(400).send("Bad Request");
 });
 
-router.get("/deletes/all", authToken, async (req, res, next) => {
-  const user = await User.findOne({ id: req.user.id });
+// DELETE ALL - /user/logins/deletes/all
+router.get("/deletes/all", authToken, async (req, res, _next) => {
+  const user = await User.findOne({ _id: req.user.id });
   if (user) {
-    const userLogins = await userLogins.findAll({ userId: user.id });
+    const userLogins = await UserLogin.find({ userId: user.id });
     const ip =
       (req.headers["x-forwarded-for"] || "").split(",").pop().trim() ||
       req.connection.remoteAddress ||
@@ -97,13 +104,13 @@ router.get("/deletes/all", authToken, async (req, res, next) => {
     let logins = [];
     userLogins.forEach(async (userLogin) => {
       current = false;
-      if (req.user.tokenId == userLogin.tokenId) {
+      if (req.user.token_id == userLogin.tokenId) {
         current = true;
       }
       userLogin.tokenDeleted = true;
       userLogin.loggedOut = true;
       userLogin.save();
-      let login = login.get({ plain: true });
+      let login = userLogin;
       login.current = current;
       logins.push(login);
     });
