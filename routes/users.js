@@ -4,7 +4,7 @@ const User = require("../models/user");
 const UserLogins = require("../models/userLogin");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs/dist/bcrypt");
-const cid = require("custom-id");
+const cid = require("custom-id-new");
 const createToken = require("../util/token");
 
 /* GET users listing. */
@@ -12,7 +12,7 @@ router.get("/", (req, res) => {
   res.send("respond with a resource");
 });
 
-// CREATE USER
+// CREATE USER - /users/create
 router.post("/create", async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -37,8 +37,9 @@ router.post("/create", async (req, res) => {
 
     req.user = newUser;
     req.auth = { id: req.user._id, register: true };
-    req.token = createToken(req);
 
+    req.token = await createToken(req);
+    res.setHeader("x-auth-token", req.token);
     const responseOb = {
       auth: true,
       token: req.token,
@@ -50,7 +51,7 @@ router.post("/create", async (req, res) => {
   }
 });
 
-// LOGIN USER
+// LOGIN USER - /users/login
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -63,13 +64,13 @@ router.post("/login", async (req, res) => {
     const dbUser = await User.findOne({ email });
 
     if (dbUser && (await bcrypt.compare(password, dbUser.password))) {
-      req.user = userexists;
+      req.user = dbUser;
       req.auth = {
-        id: req.user.id,
+        id: req.user._id,
         register: false,
       };
-      req.token = createToken(req);
-
+      req.token = await createToken(req);
+      res.setHeader("x-auth-token", req.token);
       const responseOb = {
         auth: true,
         token: req.token,
