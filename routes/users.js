@@ -14,6 +14,7 @@ router.get("/", (req, res) => {
 
 // CREATE USER - /users/create
 router.post("/create", async (req, res) => {
+  // #swagger.tags = ['User']
   try {
     const { username, email, password } = req.body;
 
@@ -53,6 +54,7 @@ router.post("/create", async (req, res) => {
 
 // LOGIN USER - /users/login
 router.post("/login", async (req, res) => {
+  // #swagger.tags = ['User']
   try {
     const { email, password } = req.body;
 
@@ -87,6 +89,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.delete("/logout", blacklistToken, async (req, res) => {
+  // #swagger.tags = ['User']
   return res.json({ message: "Token blacklisted. User logged out." });
 });
 
