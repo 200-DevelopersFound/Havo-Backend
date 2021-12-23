@@ -53,7 +53,7 @@ router.post("/verify/otp", async (req, res, next) => {
                 required: true,
                 schema: { verification_key : "Verification Key from trigger OTP", otp : "XXXXXX", check : "Email ID to be verified"}
         } */
-      /* #swagger.responses[400] = { 
+    /* #swagger.responses[400] = { 
         description: 'Multiple 400 errors',
         schema: { 
           VerificationKey_Error : { error: "Verification_key not provided" },
@@ -68,25 +68,24 @@ router.post("/verify/otp", async (req, res, next) => {
        }
       */
 
-
     const { verification_key, otp, check } = req.body;
     if (!verification_key) {
       return res.status(400).json({ error: "Verification_key not provided" });
     }
     if (!otp) {
-      return res.status(400).send({ error: "OTP not provided" });
+      return res.status(400).json({ error: "OTP not provided" });
     }
     let decodeed;
     try {
       decodeed = await decode(verification_key);
     } catch {
-      return res.status(400).send({error : "Verification key corupted"});
+      return res.status(400).json({ error: "Verification key corupted" });
     }
 
     const check_obj = decodeed.check;
 
     if (check_obj != check) {
-      return res.status(400).send({error : "Email ID Incorrect"});
+      return res.status(400).json({ error: "Email ID Incorrect" });
     }
 
     const otp_instance = await OTP.findById(decodeed.id);
@@ -102,18 +101,18 @@ router.post("/verify/otp", async (req, res, next) => {
               Details: "OTP Matched",
               Check: check,
             };
-            return res.status(200).send(response);
+            return res.status(200).json(response);
           } else {
-            return res.status(400).send({error : "OTP NOT Matched"});
+            return res.status(400).json({ error: "OTP NOT Matched" });
           }
         } else {
-          return res.status(400).send({error : "OTP Expired"});
+          return res.status(400).json({ error: "OTP Expired" });
         }
       } else {
-        return res.status(400).send({error : "OTP already used"});
+        return res.status(400).json({ error: "OTP already used" });
       }
     } else {
-      return res.status(400).send({error : "Bad Request"});
+      return res.status(400).json({ error: "Bad Request" });
     }
   } catch (err) {
     // #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Error occured' }
