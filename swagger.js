@@ -5,11 +5,11 @@ const endpointsFiles = ["./app.js"];
 
 const doc = {
   info: {
-    version: "1.0.0",
-    title: "handwriter-backend",
-    description: "Handwriter Application Backend Routes",
+    version: "2.0.0",
+    title: "Handwriter Express Application",
+    description: "Handwriter Express Application Routes",
   },
-  host: "https://handwritingbackend.herokuapp.com/",
+  host: "https://handwritingbackend.herokuapp.com",
   basePath: "/",
   schemes: ["http", "https"],
   consumes: ["application/json"],

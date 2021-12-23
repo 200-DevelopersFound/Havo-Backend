@@ -7,10 +7,6 @@ const bcrypt = require("bcryptjs/dist/bcrypt");
 const cid = require("custom-id-new");
 const createToken = require("../util/token");
 const blacklistToken = require("../middleware/blackListToken");
-/* GET users listing. */
-router.get("/", (req, res) => {
-  res.send("respond with a resource");
-});
 
 // CREATE USER - /users/create
 router.post("/create", async (req, res) => {
