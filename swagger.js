@@ -9,7 +9,7 @@ const doc = {
     title: "Handwriter Express Application",
     description: "Handwriter Express Application Routes",
   },
-  host: "https://handwritingbackend.herokuapp.com",
+  host: "handwritingbackend.herokuapp.com",
   basePath: "/",
   schemes: ["http", "https"],
   consumes: ["application/json"],

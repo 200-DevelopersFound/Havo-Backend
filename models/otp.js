@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { validateEmail, reg } = require("../util/validateEmail");
+const validateEmail = require("../util/validateEmail");
 
 const otpSchema = new mongoose.Schema({
   createdAt: { type: Date, default: new Date().getTime() },
@@ -11,8 +11,7 @@ const otpSchema = new mongoose.Schema({
     trim: true,
     lowercase: true,
     required: true,
-    // validate: [validateEmail, "Please fill a valid email address"],
-    match: [reg, "Please fill a valid email address"],
+    validate: [validateEmail, "Please fill a valid email address"],
   },
 });
 

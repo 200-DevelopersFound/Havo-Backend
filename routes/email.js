@@ -34,7 +34,7 @@ router.post("/trigger/otp", async (req, res, next) => {
       if (err) {
         return next(err.message);
       } else return res.json({ verification_key: encoded });
-      // #swagger.responses[200] = { schema: { verification_key: "encoded" } , description: "OTP sent to user" }
+      // #swagger.responses[200] = { schema: { "verification_key": "U2FsdGVkX1+ZMdUr8NfZX/FCeKFc1fdrnsVm1AONDODv6kxbHuQ/8ZoQcrAN2zmxUZUBWFn6ihnpHW+s/gNpc+Mg4pxk++JoMix1N3stdI4aAYSKdYsPx+V/tqvSgOGijabkUW1kRLcwWeMlTJO/2Q==" } , description: "OTP sent to user" }
     });
   } catch (err) {
     // #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Error occured' }
@@ -68,7 +68,7 @@ router.post("/verify/otp", async (req, res, next) => {
         },
        }
       */
-
+    // #swagger.responses[200] = { schema: { "status": "SUCCESS", "message": "OTP Matched", "check": "200shreyans@gmail.com" } , description: "OTP verified by user" }
     const { verification_key, otp, check } = req.body;
     if (!verification_key) {
       return res.status(400).json({ error: "Verification_key not provided" });
@@ -98,9 +98,9 @@ router.post("/verify/otp", async (req, res, next) => {
             otp_instance.save();
 
             const response = {
-              Status: "Success",
-              Details: "OTP Matched",
-              Check: check,
+              status: "SUCCESS",
+              message: "OTP Matched",
+              check: check,
             };
             return res.status(200).json(response);
           } else {

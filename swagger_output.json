@@ -5,7 +5,7 @@
     "title": "Handwriter Express Application",
     "description": "Handwriter Express Application Routes"
   },
-  "host": "https://handwritingbackend.herokuapp.com",
+  "host": "handwritingbackend.herokuapp.com",
   "basePath": "/",
   "tags": [
     {
@@ -395,7 +395,7 @@
               "properties": {
                 "verification_key": {
                   "type": "string",
-                  "example": "encoded"
+                  "example": "U2FsdGVkX1+ZMdUr8NfZX/FCeKFc1fdrnsVm1AONDODv6kxbHuQ/8ZoQcrAN2zmxUZUBWFn6ihnpHW+s/gNpc+Mg4pxk++JoMix1N3stdI4aAYSKdYsPx+V/tqvSgOGijabkUW1kRLcwWeMlTJO/2Q=="
                 }
               },
               "xml": {
@@ -469,7 +469,27 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OTP verified by user",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "SUCCESS"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "OTP Matched"
+                },
+                "check": {
+                  "type": "string",
+                  "example": "200shreyans@gmail.com"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "400": {
             "description": "Multiple 400 errors",
