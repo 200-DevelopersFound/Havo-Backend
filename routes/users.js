@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
+const OTP = require("../models/otp");
 const UserLogins = require("../models/userLogin");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs/dist/bcrypt");
@@ -11,7 +12,7 @@ const blacklistToken = require("../middleware/blackListToken");
 // CREATE USER - /users/create
 router.post("/create", async (req, res) => {
   // #swagger.tags = ['User']
-  /* #swagger.responses[200] = {  schema: {  }, description: 'TBA' } */
+  /* #swagger.responses[200] = {  schema: { "auth": true, "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYzZlMmZmMTYyMDUyZmNiYjI0OGZlYyIsInRva2VuX2lkIjoiODc5OEdUREQyODI2WkZQQiIsImlhdCI6MTY0MDQyNDE5Mn0.89JxJwWzT3DMSGCX3zQtPpf5rgSSJVS2cvpDwHUn-4U", "message": "User created and Logged in" }, description: 'TBA' } */
   /*  #swagger.parameters['obj'] = {
                 in: 'body',
                 description: 'User SignUP Information',
@@ -33,6 +34,14 @@ router.post("/create", async (req, res) => {
         schema: { 
           UserEmail_Error : { error: "User Email already found." },
           UserName_Error : { error: "Username already used." },
+        },
+       }
+      */
+  /* #swagger.responses[401] = {
+        description: 'Multiple 401 errors',
+        schema: { 
+          UserEmailNotVerified_Error : { error: "Email not verified" },
+          OTPNotVerified_Error : { error: "OTP not verified" },
         },
        }
       */
@@ -59,6 +68,12 @@ router.post("/create", async (req, res) => {
     if (dbUserName)
       return res.status(409).json({ error: "Username already used." });
 
+    const emailVerified = await OTP.findOne({ email: email });
+    if (!emailVerified)
+      return res.status(401).json({ error: "Email not verified" });
+    if (!emailVerified.verified)
+      return res.status(401).json({ error: "OTP not verified" });
+
     const newUser = await User.create({
       username,
       email: email.toLowerCase(),
@@ -73,7 +88,7 @@ router.post("/create", async (req, res) => {
     const responseOb = {
       auth: true,
       token: req.token,
-      message: "User found and Logged in",
+      message: "User created and Logged in",
     };
     return res.status(200).json(responseOb);
   } catch (err) {

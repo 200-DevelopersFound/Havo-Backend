@@ -5,7 +5,7 @@
     "title": "Handwriter Express Application",
     "description": "Handwriter Express Application Routes"
   },
-  "host": "handwritingbackend.herokuapp.com",
+  "host": "1500-103-112-21-234.ngrok.io",
   "basePath": "/",
   "tags": [
     {
@@ -62,11 +62,6 @@
         "produces": [],
         "parameters": [
           {
-            "name": "x-forwarded-for",
-            "in": "header",
-            "type": "string"
-          },
-          {
             "name": "user-agent",
             "in": "header",
             "type": "string"
@@ -100,7 +95,20 @@
             "description": "TBA",
             "schema": {
               "type": "object",
-              "properties": {},
+              "properties": {
+                "auth": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYzZlMmZmMTYyMDUyZmNiYjI0OGZlYyIsInRva2VuX2lkIjoiODc5OEdUREQyODI2WkZQQiIsImlhdCI6MTY0MDQyNDE5Mn0.89JxJwWzT3DMSGCX3zQtPpf5rgSSJVS2cvpDwHUn-4U"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "User created and Logged in"
+                }
+              },
               "xml": {
                 "name": "main"
               }
@@ -144,6 +152,35 @@
                     "error": {
                       "type": "string",
                       "example": "Password not Found"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Multiple 401 errors",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "UserEmailNotVerified_Error": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Email not verified"
+                    }
+                  }
+                },
+                "OTPNotVerified_Error": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "OTP not verified"
                     }
                   }
                 }
@@ -208,11 +245,6 @@
         "description": "",
         "produces": [],
         "parameters": [
-          {
-            "name": "x-forwarded-for",
-            "in": "header",
-            "type": "string"
-          },
           {
             "name": "user-agent",
             "in": "header",

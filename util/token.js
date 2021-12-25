@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const createToken = async (req) => {
   try {
     const ip =
-      (req.headers["x-forwarded-for"] || "").split(",").pop().trim() ||
+      // (req.headers["x-forwarded-for"] || "").split(",").pop().trim() ||
       req.connection.remoteAddress ||
       req.socket.remoteAddress ||
       req.connection.socket.remoteAddress;
