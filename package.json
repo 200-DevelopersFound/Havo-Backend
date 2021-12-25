@@ -5,12 +5,13 @@
   "scripts": {
     "start": "node ./bin/www",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon",
+    "dev": "export NODE_ENV=development && nodemon",
     "dev-ignore": "nodemon --ignore '/swagger_output.json'",
     "swagger-autogen": "node swagger.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "crypto-js": "^4.1.1",
     "custom-id-new": "^1.2.1",
     "debug": "~2.6.9",

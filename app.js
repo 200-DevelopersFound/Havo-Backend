@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const logger = require("morgan");
 const swaggerUi = require("swagger-ui-express");
-// const swagger = require("./swagger.js");
+const cors = require("cors");
 
 const swaggerFile = require("./swagger_output.json");
 const indexRouter = require("./routes/index");
@@ -13,8 +13,8 @@ const loginRouter = require("./routes/loginActivity");
 const app = express();
 
 require("./config/database").connect();
-// swagger();
 
+app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

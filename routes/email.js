@@ -22,6 +22,7 @@ router.post("/trigger/otp", async (req, res, next) => {
     });
     const otpUser = await OTP.create({
       otp: otp,
+      email: email,
     });
     const details = {
       message: "OTP sent to user",
