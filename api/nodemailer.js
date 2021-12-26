@@ -12,16 +12,28 @@ const transporter = nodemailer.createTransport({
     pass: PASSWORD,
   },
 });
-const sendMail = (email, otp, obj, callback) => {
+const sendMail = (email, otp, callback) => {
   transporter.sendMail(
     {
       from: "200shreyans@gmail.com",
       to: email,
-      subject: "Text-Email",
-      text: "Your OTP is " + otp + "\n" + JSON.stringify(obj),
+      subject: "Email Verify OTP",
+      text: "Your OTP is " + otp,
     },
     callback
   );
 };
 
-module.exports = sendMail;
+const sendPasswordResetLink = (email, token, callback) => {
+  transporter.sendMail(
+    {
+      from: "200shreyans@gmail.com",
+      to: email,
+      subject: "Password Reset OTP",
+      text: "Your Password reset link is " + token,
+    },
+    callback
+  );
+};
+
+module.exports = { sendMail, sendPasswordResetLink };

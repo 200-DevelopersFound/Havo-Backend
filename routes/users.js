@@ -2,12 +2,12 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const OTP = require("../models/otp");
-const UserLogins = require("../models/userLogin");
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs/dist/bcrypt");
-const cid = require("custom-id-new");
 const createToken = require("../util/token");
 const blacklistToken = require("../middleware/blackListToken");
+const { sendPasswordResetLink } = require("../api/nodemailer");
+const customId = require("custom-id-new");
+const date = require("../util/date");
 
 // CREATE USER - /users/create
 router.post("/create", async (req, res) => {
@@ -69,6 +69,7 @@ router.post("/create", async (req, res) => {
       return res.status(409).json({ error: "Username already used." });
 
     const emailVerified = await OTP.findOne({ email: email });
+    console.log(emailVerified);
     if (!emailVerified)
       return res.status(401).json({ error: "Email not verified" });
     if (!emailVerified.verified)
@@ -155,6 +156,81 @@ router.post("/login", async (req, res) => {
 router.delete("/logout", blacklistToken, async (req, res) => {
   // #swagger.tags = ['User']
   return res.json({ message: "Token blacklisted. User logged out." });
+});
+
+router.post("/forgetPassword", async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ error: "Email not found" });
+
+    const dbUser = await User.findOne({ email });
+    const forgetToken = await customId({
+      date: Date.now(),
+    });
+    if (dbUser) {
+      dbUser.resetPasswordToken = forgetToken;
+      dbUser.resetPasswordExpiry = new Date().getTime() + 1000000;
+      await dbUser.save();
+    } else {
+      return res.status(404).json({ error: "User not found" });
+    }
+    sendPasswordResetLink(email, forgetToken, (err, payload) => {
+      if (err) {
+        return next(err.message);
+      } else
+        return res.json({
+          message: "Password reset OTP sent to user`s registered Email Id",
+        });
+    });
+  } catch (err) {
+    // #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Error occured' }
+    return next(err.message);
+  }
+});
+
+router.post("/updatePassword", async (req, res, next) => {
+  try {
+    let currentdate = new Date();
+    const { email, resetPasswordToken, password } = req.body;
+    if (!resetPasswordToken) {
+      return res
+        .status(400)
+        .json({ error: "Reset Password Token not provided" });
+    }
+    if (!password) {
+      return res.status(400).json({ error: "Password not provided" });
+    }
+
+    const dbUser = await User.findOne({ email });
+    console.log(dbUser);
+    if (dbUser != null) {
+      if (date.compare(dbUser.resetPasswordExpiry, currentdate) == 1) {
+        if (resetPasswordToken == dbUser.resetPasswordToken) {
+          dbUser.password = await bcrypt.hash(password, 10);
+          dbUser.resetPasswordToken = null;
+          dbUser.resetPasswordExpiry = null;
+          await dbUser.save();
+          return res.status(201).json({ status: "Password reset successfull" });
+        } else {
+          return res.status(401).json({ error: "Unauthorized" });
+        }
+      } else {
+        // token expired
+        dbUser.resetPasswordToken = null;
+        dbUser.resetPasswordExpiry = null;
+        await dbUser.save();
+        return res.status(400).json({ error: "OTP Expired" });
+      }
+    } else {
+      return res
+        .status(404)
+        .json({ error: "No user found with this Email ID" });
+      // user doesnot exist
+    }
+  } catch (error) {
+    // #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Error occured' }
+    return next(error.message);
+  }
 });
 
 module.exports = router;

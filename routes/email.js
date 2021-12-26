@@ -1,6 +1,6 @@
 const express = require("express");
 const otpGenerator = require("otp-generator");
-const sendMail = require("../api/nodemailer");
+const { sendMail } = require("../api/nodemailer");
 const { encode, decode } = require("../middleware/secret");
 const router = express.Router();
 const OTP = require("../models/otp");
@@ -30,10 +30,12 @@ router.post("/trigger/otp", async (req, res, next) => {
       check: email,
     };
     const encoded = await encode(details);
-    sendMail(email, otp, details, (err, message) => {
+    sendMail(email, otp, (err, message) => {
       if (err) {
         return next(err.message);
-      } else return res.json({ verification_key: encoded });
+      } else {
+        return res.json({ verification_key: encoded });
+      }
       // #swagger.responses[200] = { schema: { "verification_key": "U2FsdGVkX1+ZMdUr8NfZX/FCeKFc1fdrnsVm1AONDODv6kxbHuQ/8ZoQcrAN2zmxUZUBWFn6ihnpHW+s/gNpc+Mg4pxk++JoMix1N3stdI4aAYSKdYsPx+V/tqvSgOGijabkUW1kRLcwWeMlTJO/2Q==" } , description: "OTP sent to user" }
     });
   } catch (err) {
@@ -96,7 +98,7 @@ router.post("/verify/otp", async (req, res, next) => {
           if (otp === otp_instance.otp) {
             otp_instance.verified = true;
             otp_instance.save();
-
+            console.log(otp_instance);
             const response = {
               status: "SUCCESS",
               message: "OTP Matched",
