@@ -1814,6 +1814,10 @@
         "verified": {
           "type": "boolean",
           "example": true
+        },
+        "email": {
+          "type": "string",
+          "example": "XXXX@YYY.ZZZ"
         }
       }
     },
@@ -1843,6 +1847,31 @@
         "resetPasswordExpiry": {
           "type": "string",
           "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYmY3N2M4MTcwMWYwM2QxMGZkOTBlYyIsInRva2VuX2lkIjoiMzkwMk9HRUwwOTEzREFESiIsImlhdCI6MTYzOTkzNzk5Mn0.noLtLpwevdnkhFU9uOKepT2Ynd-rjnRCCeLA3yd323g"
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "61c8af95598a5a9a7a56ee92"
+              },
+              "title": {
+                "type": "string",
+                "example": "INTRO"
+              },
+              "dialogues": {
+                "type": "array",
+                "example": [
+                  "abcd"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -1884,6 +1913,28 @@
         "device": {
           "type": "string",
           "example": "PostmanRuntime/7.28.4"
+        }
+      }
+    },
+    "Category": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "example": "61c8af95598a5a9b7a56ee92"
+        },
+        "title": {
+          "type": "string",
+          "example": "INTRO"
+        },
+        "dialogues": {
+          "type": "array",
+          "example": [
+            "abcd"
+          ],
+          "items": {
+            "type": "string"
+          }
         }
       }
     }
