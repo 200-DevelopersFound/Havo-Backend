@@ -5,7 +5,7 @@
     "title": "Handwriter Express Application",
     "description": "Handwriter Express Application Routes"
   },
-  "host": "1500-103-112-21-234.ngrok.io",
+  "host": "handwritingbackend.herokuapp.com",
   "basePath": "/",
   "tags": [
     {
@@ -53,6 +53,18 @@
         "responses": {}
       }
     },
+    "/deleteEverything": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/users/create": {
       "post": {
         "tags": [
@@ -92,7 +104,7 @@
         ],
         "responses": {
           "200": {
-            "description": "TBA",
+            "description": "Create User in database with proper credentials.",
             "schema": {
               "type": "object",
               "properties": {
@@ -272,10 +284,23 @@
         ],
         "responses": {
           "200": {
-            "description": "TBA",
+            "description": "User logged in",
             "schema": {
               "type": "object",
-              "properties": {},
+              "properties": {
+                "auth": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYzg5MGJiY2JmMjc1NDAwZDRkZGJmOSIsInRva2VuX2lkIjoiOTEwOVpGTVAxMDE0RUFBVSIsImlhdCI6MTY0MDUzNDI5N30.x92jESKmKLYFp1VbHBM9JMbUh8jfmR56ChrTIBb0_II"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "User found and Logged in"
+                }
+              },
               "xml": {
                 "name": "main"
               }
@@ -392,6 +417,313 @@
                 "name": "main"
               }
             }
+          }
+        }
+      }
+    },
+    "/users/forgetPassword": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "User Login Information",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "XXXXXX@yyyy.com"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User logged in",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Password reset OTP sent to user`s registered Email Id"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "User not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Email not found"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "User not found"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Error message"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "Error occured"
+          }
+        }
+      }
+    },
+    "/users/updatePassword": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "User Login Information",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "resetPasswordToken": {
+                  "type": "string",
+                  "example": "AB12CD2"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "XXXAAABB"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "XXXXXX@yyyy.com"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Password reset OTP sent to user`s registered Email Id"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "User logged in"
+          },
+          "204": {
+            "description": "User logged in",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "Password reset successfull"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Multiple 400 Errors"
+          },
+          "401": {
+            "description": "User logged in",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Unauthorized"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "No user found with this Email ID"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Error message"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "Error occured"
+          }
+        }
+      }
+    },
+    "/users/updateUserPassword": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "User Login Information",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "password": {
+                  "type": "string",
+                  "example": "XXXXXXewfefyyy"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User logged in",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "Password update successfull"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "User not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad Request"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Token BlackListed"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Forbidden"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Error message"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "Error occured"
           }
         }
       }
@@ -639,10 +971,67 @@
         ],
         "responses": {
           "200": {
-            "description": "TBA",
+            "description": "Get all User Logins",
             "schema": {
               "type": "object",
-              "properties": {},
+              "properties": {
+                "user_logins": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "61c89118cbf275400d4ddc01"
+                      },
+                      "userId": {
+                        "type": "string",
+                        "example": "61c890bbcbf275400d4ddbf9"
+                      },
+                      "loggedOut": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "loggedInAt": {
+                        "type": "string",
+                        "example": "2021-12-26T15:53:00.797Z"
+                      },
+                      "loggedOutAt": {
+                        "type": "string",
+                        "example": "2021-12-26T15:53:00.797Z"
+                      },
+                      "ipAddress": {
+                        "type": "string",
+                        "example": "::1"
+                      },
+                      "tokenId": {
+                        "type": "string",
+                        "example": "9109ZFMP1014EAAU"
+                      },
+                      "tokenSecret": {
+                        "type": "string",
+                        "example": "77777979ENSVHLIO75977759OFZNRMEM"
+                      },
+                      "tokenDeleted": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "device": {
+                        "type": "string",
+                        "example": "PostmanRuntime/7.28.4"
+                      },
+                      "__v": {
+                        "type": "number",
+                        "example": 0
+                      },
+                      "current": {
+                        "type": "boolean",
+                        "example": true
+                      }
+                    }
+                  }
+                }
+              },
               "xml": {
                 "name": "main"
               }
@@ -717,10 +1106,64 @@
         ],
         "responses": {
           "200": {
-            "description": "TBA",
+            "description": "Delete selected user login from token ID",
             "schema": {
               "type": "object",
-              "properties": {},
+              "properties": {
+                "deleted": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "userLogin": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "61c890bbcbf275400d4ddbfc"
+                    },
+                    "userId": {
+                      "type": "string",
+                      "example": "61c890bbcbf275400d4ddbf9"
+                    },
+                    "loggedOut": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "loggedInAt": {
+                      "type": "string",
+                      "example": "2021-12-26T15:53:00.797Z"
+                    },
+                    "loggedOutAt": {
+                      "type": "string",
+                      "example": "2021-12-26T15:53:00.797Z"
+                    },
+                    "ipAddress": {
+                      "type": "string",
+                      "example": "::1"
+                    },
+                    "tokenId": {
+                      "type": "string",
+                      "example": "1114SEQI4644QYMY"
+                    },
+                    "tokenSecret": {
+                      "type": "string",
+                      "example": "27999797XVNSAHFV22272222GKZJUGSM"
+                    },
+                    "tokenDeleted": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "device": {
+                      "type": "string",
+                      "example": "PostmanRuntime/7.28.4"
+                    },
+                    "__v": {
+                      "type": "number",
+                      "example": 0
+                    }
+                  }
+                }
+              },
               "xml": {
                 "name": "main"
               }
@@ -789,10 +1232,67 @@
         ],
         "responses": {
           "200": {
-            "description": "TBA",
+            "description": "Log out from all devices except current",
             "schema": {
               "type": "object",
-              "properties": {},
+              "properties": {
+                "deleted": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "userLogin": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "61c89118cbf275400d4ddc01"
+                      },
+                      "userId": {
+                        "type": "string",
+                        "example": "61c890bbcbf275400d4ddbf9"
+                      },
+                      "loggedOut": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "loggedInAt": {
+                        "type": "string",
+                        "example": "2021-12-26T15:53:00.797Z"
+                      },
+                      "loggedOutAt": {
+                        "type": "string",
+                        "example": "2021-12-26T15:53:00.797Z"
+                      },
+                      "ipAddress": {
+                        "type": "string",
+                        "example": "::1"
+                      },
+                      "tokenId": {
+                        "type": "string",
+                        "example": "9109ZFMP1014EAAU"
+                      },
+                      "tokenSecret": {
+                        "type": "string",
+                        "example": "77777979ENSVHLIO75977759OFZNRMEM"
+                      },
+                      "tokenDeleted": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "device": {
+                        "type": "string",
+                        "example": "PostmanRuntime/7.28.4"
+                      },
+                      "__v": {
+                        "type": "number",
+                        "example": 0
+                      }
+                    }
+                  }
+                }
+              },
               "xml": {
                 "name": "main"
               }
@@ -861,10 +1361,67 @@
         ],
         "responses": {
           "200": {
-            "description": "TBA",
+            "description": "Logout from all devices.",
             "schema": {
               "type": "object",
-              "properties": {},
+              "properties": {
+                "deleted": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "user_login": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "61c89118cbf275400d4ddc01"
+                      },
+                      "userId": {
+                        "type": "string",
+                        "example": "61c890bbcbf275400d4ddbf9"
+                      },
+                      "loggedOut": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "loggedInAt": {
+                        "type": "string",
+                        "example": "2021-12-26T15:53:00.797Z"
+                      },
+                      "loggedOutAt": {
+                        "type": "string",
+                        "example": "2021-12-26T15:53:00.797Z"
+                      },
+                      "ipAddress": {
+                        "type": "string",
+                        "example": "::1"
+                      },
+                      "tokenId": {
+                        "type": "string",
+                        "example": "9109ZFMP1014EAAU"
+                      },
+                      "tokenSecret": {
+                        "type": "string",
+                        "example": "77777979ENSVHLIO75977759OFZNRMEM"
+                      },
+                      "tokenDeleted": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "device": {
+                        "type": "string",
+                        "example": "PostmanRuntime/7.28.4"
+                      },
+                      "__v": {
+                        "type": "number",
+                        "example": 0
+                      }
+                    }
+                  }
+                }
+              },
               "xml": {
                 "name": "main"
               }

@@ -7,7 +7,38 @@ const User = require("../models/user");
 // SHOW ALL LA - /user/logins/show
 router.get("/show", authToken, async (req, res, _next) => {
   // #swagger.tags = ['Login Activity']
-  /* #swagger.responses[200] = {  schema: {  }, description: 'TBA' } */
+  /* #swagger.responses[200] = {  schema: {
+    "user_logins": [
+        {
+            "_id": "61c890bbcbf275400d4ddbfc",
+            "userId": "61c890bbcbf275400d4ddbf9",
+            "loggedOut": false,
+            "loggedInAt": "2021-12-26T15:53:00.797Z",
+            "loggedOutAt": "2021-12-26T15:53:00.797Z",
+            "ipAddress": "::1",
+            "tokenId": "1114SEQI4644QYMY",
+            "tokenSecret": "27999797XVNSAHFV22272222GKZJUGSM",
+            "tokenDeleted": false,
+            "device": "PostmanRuntime/7.28.4",
+            "__v": 0,
+            "current": false
+        },
+        {
+            "_id": "61c89118cbf275400d4ddc01",
+            "userId": "61c890bbcbf275400d4ddbf9",
+            "loggedOut": false,
+            "loggedInAt": "2021-12-26T15:53:00.797Z",
+            "loggedOutAt": "2021-12-26T15:53:00.797Z",
+            "ipAddress": "::1",
+            "tokenId": "9109ZFMP1014EAAU",
+            "tokenSecret": "77777979ENSVHLIO75977759OFZNRMEM",
+            "tokenDeleted": false,
+            "device": "PostmanRuntime/7.28.4",
+            "__v": 0,
+            "current": true
+        }
+    ]
+}, description: 'Get all User Logins' } */
   /* #swagger.responses[400] = {  schema: { error: "Bad Request" }, description: 'Unauthorized' } */
 
   const user = await User.findOne({ _id: req.user.id });
@@ -43,7 +74,22 @@ router.get("/show", authToken, async (req, res, _next) => {
 // DELETE LA ID - /user/logins/delete/:login_id
 router.get("/delete/:login_id", authToken, async (req, res, _next) => {
   // #swagger.tags = ['Login Activity']
-  /* #swagger.responses[200] = {  schema: {  }, description: 'TBA' } */
+  /* #swagger.responses[200] = {  schema: {
+    "deleted": true,
+    "userLogin": {
+        "_id": "61c890bbcbf275400d4ddbfc",
+        "userId": "61c890bbcbf275400d4ddbf9",
+        "loggedOut": false,
+        "loggedInAt": "2021-12-26T15:53:00.797Z",
+        "loggedOutAt": "2021-12-26T15:53:00.797Z",
+        "ipAddress": "::1",
+        "tokenId": "1114SEQI4644QYMY",
+        "tokenSecret": "27999797XVNSAHFV22272222GKZJUGSM",
+        "tokenDeleted": true,
+        "device": "PostmanRuntime/7.28.4",
+        "__v": 0
+    }
+}, description: 'Delete selected user login from token ID' } */
   /* #swagger.responses[400] = {  schema: { error: "Bad Request" }, description: 'Unauthorized' } */
 
   const user = await User.findOne({ _id: req.user.id });
@@ -70,7 +116,24 @@ router.get("/delete/:login_id", authToken, async (req, res, _next) => {
 // DELETE OTHERS - /user/logins/delete/all/not-current
 router.get("/delete/all/not-current", authToken, async (req, res, _next) => {
   // #swagger.tags = ['Login Activity']
-  /* #swagger.responses[200] = {  schema: {  }, description: 'TBA' } */
+  /* #swagger.responses[200] = {  schema: {
+    "deleted": true,
+    "userLogin": [
+        {
+            "_id": "61c89118cbf275400d4ddc01",
+            "userId": "61c890bbcbf275400d4ddbf9",
+            "loggedOut": false,
+            "loggedInAt": "2021-12-26T15:53:00.797Z",
+            "loggedOutAt": "2021-12-26T15:53:00.797Z",
+            "ipAddress": "::1",
+            "tokenId": "9109ZFMP1014EAAU",
+            "tokenSecret": "77777979ENSVHLIO75977759OFZNRMEM",
+            "tokenDeleted": false,
+            "device": "PostmanRuntime/7.28.4",
+            "__v": 0
+        }
+    ]
+}, description: 'Log out from all devices except current' } */
   /* #swagger.responses[400] = {  schema: { error: "Bad Request" }, description: 'Unauthorized' } */
 
   const user = await User.findOne({ _id: req.user.id });
@@ -105,7 +168,37 @@ router.get("/delete/all/not-current", authToken, async (req, res, _next) => {
 // DELETE ALL - /user/logins/deletes/all
 router.get("/deletes/all", authToken, async (req, res, _next) => {
   // #swagger.tags = ['Login Activity']
-  /* #swagger.responses[200] = {  schema: {  }, description: 'TBA' } */
+  /* #swagger.responses[200] = {  schema: {
+    "deleted": true,
+    "user_login": [
+        {
+            "_id": "61c890bbcbf275400d4ddbfc",
+            "userId": "61c890bbcbf275400d4ddbf9",
+            "loggedOut": true,
+            "loggedInAt": "2021-12-26T15:53:00.797Z",
+            "loggedOutAt": "2021-12-26T15:53:00.797Z",
+            "ipAddress": "::1",
+            "tokenId": "1114SEQI4644QYMY",
+            "tokenSecret": "27999797XVNSAHFV22272222GKZJUGSM",
+            "tokenDeleted": true,
+            "device": "PostmanRuntime/7.28.4",
+            "__v": 0
+        },
+        {
+            "_id": "61c89118cbf275400d4ddc01",
+            "userId": "61c890bbcbf275400d4ddbf9",
+            "loggedOut": true,
+            "loggedInAt": "2021-12-26T15:53:00.797Z",
+            "loggedOutAt": "2021-12-26T15:53:00.797Z",
+            "ipAddress": "::1",
+            "tokenId": "9109ZFMP1014EAAU",
+            "tokenSecret": "77777979ENSVHLIO75977759OFZNRMEM",
+            "tokenDeleted": true,
+            "device": "PostmanRuntime/7.28.4",
+            "__v": 0
+        },
+    ]
+}, description: 'Logout from all devices.' } */
   /* #swagger.responses[400] = {  schema: { error: "Bad Request" }, description: 'Unauthorized' } */
 
   const user = await User.findOne({ _id: req.user.id });
