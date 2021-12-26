@@ -3,7 +3,7 @@ const path = require("path");
 const logger = require("morgan");
 const swaggerUi = require("swagger-ui-express");
 const cors = require("cors");
-
+const morganBody = require("morgan-body");
 const swaggerFile = require("./swagger_output.json");
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
@@ -23,11 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(bodyParser.json());
-app.use((req, res, next) => {
-  console.log("REQUEST");
-  console.log(req.body);
-  next();
-});
+morganBody(app);
 
 app.use("/", indexRouter);
 app.use("/user", usersRouter);
