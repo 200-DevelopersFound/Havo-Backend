@@ -12,6 +12,7 @@ const loginRouter = require("./routes/loginActivity");
 const categoryRouter = require("./routes/category");
 
 const app = express();
+const bodyParser = require("body-parser"); //add this
 
 require("./config/database").connect();
 
@@ -21,7 +22,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 // app.use(express.static("public"));
-
+app.use(bodyParser.json());
+app.use((req, res, next) => {
+  console.log("REQUEST");
+  console.log(req.body);
+  next();
+});
 app.set("view engine", "ejs");
 
 app.use("/", indexRouter);
