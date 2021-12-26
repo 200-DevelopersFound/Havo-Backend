@@ -5,7 +5,7 @@ const endpointsFiles = ["./app.js"];
 
 const doc = {
   info: {
-    version: "2.0.0",
+    version: "3.0.0",
     title: "Handwriter Express Application",
     description: "Handwriter Express Application Routes",
   },
@@ -26,6 +26,10 @@ const doc = {
     {
       name: "User",
       description: "Sign Up , Login and Logout users",
+    },
+    {
+      name: "User Category",
+      description: "User`s categories and dialogue",
     },
     {
       name: "Login Activity",

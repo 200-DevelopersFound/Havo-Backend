@@ -9,6 +9,7 @@ const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const emailRouter = require("./routes/email");
 const loginRouter = require("./routes/loginActivity");
+const categoryRouter = require("./routes/category");
 
 const app = express();
 
@@ -22,15 +23,16 @@ app.use(express.static(path.join(__dirname, "public")));
 // app.use(express.static("public"));
 
 app.set("view engine", "ejs");
+
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use("/user", usersRouter);
 app.use("/email", emailRouter);
 app.use("/user/logins", loginRouter);
+app.use("/user/category", categoryRouter);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use((err, _req, res, _next) => {
-  console.log(err);
   res.status(500).json({ error: err });
 });
 

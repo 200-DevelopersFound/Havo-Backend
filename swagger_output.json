@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "2.0.0",
+    "version": "3.0.0",
     "title": "Handwriter Express Application",
     "description": "Handwriter Express Application Routes"
   },
@@ -19,6 +19,10 @@
     {
       "name": "User",
       "description": "Sign Up , Login and Logout users"
+    },
+    {
+      "name": "User Category",
+      "description": "User`s categories and dialogue"
     },
     {
       "name": "Login Activity",
@@ -65,7 +69,7 @@
         }
       }
     },
-    "/users/create": {
+    "/user/create": {
       "post": {
         "tags": [
           "User"
@@ -249,7 +253,7 @@
         }
       }
     },
-    "/users/login": {
+    "/user/login": {
       "post": {
         "tags": [
           "User"
@@ -371,7 +375,7 @@
         }
       }
     },
-    "/users/logout": {
+    "/user/logout": {
       "delete": {
         "tags": [
           "User"
@@ -421,7 +425,7 @@
         }
       }
     },
-    "/users/forgetPassword": {
+    "/user/forget/password": {
       "post": {
         "tags": [
           "User"
@@ -431,7 +435,7 @@
           {
             "name": "obj",
             "in": "body",
-            "description": "User Login Information",
+            "description": "Registered Email Id",
             "required": true,
             "schema": {
               "type": "object",
@@ -508,7 +512,7 @@
         }
       }
     },
-    "/users/updatePassword": {
+    "/user/update/password": {
       "post": {
         "tags": [
           "User"
@@ -518,7 +522,7 @@
           {
             "name": "obj",
             "in": "body",
-            "description": "User Login Information",
+            "description": "Update User Password without logged in.",
             "required": true,
             "schema": {
               "type": "object",
@@ -571,7 +575,51 @@
             }
           },
           "400": {
-            "description": "Multiple 400 Errors"
+            "description": "Multiple 400 Errors",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ResetPasswordTokenNotFound_Error": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Reset Password Token not provided"
+                    }
+                  }
+                },
+                "PasswordNotFound_Error": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Password not provided"
+                    }
+                  }
+                },
+                "OTPExpired_Error": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "OTP Expired"
+                    }
+                  }
+                },
+                "EmailNotFound_Error": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Email not Expired"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "401": {
             "description": "User logged in",
@@ -621,7 +669,7 @@
         }
       }
     },
-    "/users/updateUserPassword": {
+    "/user/update/user/password": {
       "put": {
         "tags": [
           "User"
@@ -636,7 +684,7 @@
           {
             "name": "obj",
             "in": "body",
-            "description": "User Login Information",
+            "description": "Update User Password when logged in",
             "required": true,
             "schema": {
               "type": "object",
@@ -1471,6 +1519,260 @@
                 "name": "main"
               }
             }
+          }
+        }
+      }
+    },
+    "/user/category/create/category": {
+      "post": {
+        "tags": [
+          "User Category"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Create Category",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "categoryName": {
+                  "type": "string",
+                  "example": "INTRO"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User Cateories",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "example": "61c8af95598a5a9b7a56ee92"
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "INTRO"
+                  },
+                  "dialogues": {
+                    "type": "array",
+                    "example": [],
+                    "items": {}
+                  },
+                  "__v": {
+                    "type": "number",
+                    "example": 1
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "User not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad Request"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Token BlackListed"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Forbidden"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Error message"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "Error occured"
+          }
+        }
+      }
+    },
+    "/user/category/update/dialogue": {
+      "post": {
+        "tags": [
+          "User Category"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Update user dialogue",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "categoryId": {
+                  "type": "string",
+                  "example": "61c8af95598a5a9b7a56ee92"
+                },
+                "dialogue": {
+                  "type": "string",
+                  "example": "abcd"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User Cateories",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "example": "61c8af95598a5a9b7a56ee92"
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "INTRO"
+                  },
+                  "dialogues": {
+                    "type": "array",
+                    "example": [
+                      "abcd"
+                    ],
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "__v": {
+                    "type": "number",
+                    "example": 1
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "User not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad Request"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Token BlackListed"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Forbidden"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Error message"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "Error occured"
           }
         }
       }

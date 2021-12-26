@@ -160,12 +160,12 @@ router.delete("/logout", blacklistToken, async (req, res) => {
   return res.json({ message: "Token blacklisted. User logged out." });
 });
 
-router.post("/forgetPassword", async (req, res, next) => {
+router.post("/forget/password", async (req, res, next) => {
   // #swagger.tags = ['User']
   /* #swagger.responses[200] = {  schema: { message: "Password reset OTP sent to user`s registered Email Id" }, description: 'User logged in' } */
   /*  #swagger.parameters['obj'] = {
                 in: 'body',
-                description: 'User Login Information',
+                description: 'Registered Email Id',
                 required: true,
                 schema: { email : "XXXXXX@yyyy.com"}
         } */
@@ -201,23 +201,25 @@ router.post("/forgetPassword", async (req, res, next) => {
   }
 });
 
-router.post("/updatePassword", async (req, res, next) => {
+router.post("/update/password", async (req, res, next) => {
   // #swagger.tags = ['User']
   /* #swagger.responses[200] = {  schema: { message: "Password reset OTP sent to user`s registered Email Id" }, description: 'User logged in' } */
-  /*  #swagger.parameters['obj'] = {
+  /* #swagger.parameters['obj'] = {
                 in: 'body',
-                description: 'User Login Information',
+                description: 'Update User Password without logged in.',
                 required: true,
                 schema: {  resetPasswordToken: "AB12CD2", password : "XXXAAABB", email : "XXXXXX@yyyy.com"}
         } */
   /* #swagger.responses[400] = {  
-    description: 'Multiple 400 Errors' }
-    schema: 
-    [
+    description: 'Multiple 400 Errors',
+    schema: {
     ResetPasswordTokenNotFound_Error : { error: "Reset Password Token not provided" }, 
     PasswordNotFound_Error : { error: "Password not provided" },
-    OTPExpired_Error : { error: "OTP Expired" }
-    ]
+    OTPExpired_Error : { error: "OTP Expired" },
+    EmailNotFound_Error : { error: "Email not Expired" }
+    }
+  }
+    */
   /* #swagger.responses[404] = {  schema: { error: "No user found with this Email ID" }, description: 'User not found' } */
   /* #swagger.responses[204] = {  schema: { status: "Password reset successfull" }, description: 'User logged in' } */
   /* #swagger.responses[401] = {  schema: { error: "Unauthorized" }, description: 'User logged in' } */
@@ -229,6 +231,9 @@ router.post("/updatePassword", async (req, res, next) => {
       return res
         .status(400)
         .json({ error: "Reset Password Token not provided" });
+    }
+    if (!email) {
+      return res.status(400).json({ error: "Email not provided" });
     }
     if (!password) {
       return res.status(400).json({ error: "Password not provided" });
@@ -265,13 +270,14 @@ router.post("/updatePassword", async (req, res, next) => {
     return next(error.message);
   }
 });
+// });
 
-router.put("/updateUserPassword", authToken, async (req, res) => {
+router.put("/update/user/password", authToken, async (req, res) => {
   // #swagger.tags = ['User']
   /* #swagger.responses[204] = {  schema: { status: "Password update successfull" }, description: 'User logged in' } */
   /*  #swagger.parameters['obj'] = {
                 in: 'body',
-                description: 'User Login Information',
+                description: 'Update User Password when logged in',
                 required: true,
                 schema: { password : "XXXXXXewfefyyy"}
         } */
