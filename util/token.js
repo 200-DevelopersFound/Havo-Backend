@@ -45,7 +45,6 @@ const createToken = async (req) => {
     const accessToken = await jwt.sign(tokenUser, process.env.TOKEN_KEY);
     return accessToken;
   } catch (err) {
-    console.log(err);
     return err;
   }
 };

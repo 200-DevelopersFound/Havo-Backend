@@ -11,7 +11,7 @@ const doc = {
   },
   host: "handwritingbackend.herokuapp.com",
   basePath: "/",
-  schemes: ["http", "https"],
+  schemes: ["https"],
   consumes: ["application/json"],
   produces: ["application/json"],
   tags: [

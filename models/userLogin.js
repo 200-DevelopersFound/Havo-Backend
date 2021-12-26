@@ -12,4 +12,4 @@ const userLoginsSchema = new mongoose.Schema({
   device: { type: String },
 });
 
-module.exports = mongoose.model("userLogins", userLoginsSchema);
+module.exports = mongoose.model("UserLogins", userLoginsSchema);

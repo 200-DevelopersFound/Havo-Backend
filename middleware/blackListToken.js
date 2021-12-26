@@ -3,9 +3,10 @@ const UserLogin = require("../models/userLogin");
 const Blacklist = require("../models/blacklistToken");
 
 const blacklistToken = (req, res, next) => {
-  /* #swagger.responses[401] = {  schema: { error: "Token BlackListed" }, description: 'Unauthorized' } */
-  /* #swagger.responses[403] = {  schema: { error: "Forbidden" }, description: 'Forbidden' } */
-
+  /*
+    #swagger.responses[401] = { schema: { error: "Token BlackListed" }, description: 'Unauthorized' }
+    #swagger.responses[403] = {  schema: { error: "Forbidden" }, description: 'Forbidden' }
+  */
   const authHeader = req.headers["authorization"];
 
   // const bearer = authHeader && authHeader.split(" ")[0];
@@ -30,9 +31,7 @@ const blacklistToken = (req, res, next) => {
         .json({ Status: "Failure", message: "Token Blacklisted" });
     } else {
       jwt.verify(token, process.env.TOKEN_KEY, async (err, payload) => {
-        if (err)
-          // res.sendStatus(401);
-          return res.status(403).json({ error: "Forbidden" });
+        if (err) return res.status(403).json({ error: "Forbidden" });
         if (payload) {
           const userLogin = await UserLogin.findOne({
             userId: payload.id,

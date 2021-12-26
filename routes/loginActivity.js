@@ -4,10 +4,10 @@ const authToken = require("../middleware/index");
 const UserLogin = require("../models/userLogin");
 const User = require("../models/user");
 
-// SHOW ALL LA - /user/logins/show
 router.get("/show", authToken, async (req, res, _next) => {
-  // #swagger.tags = ['Login Activity']
-  /* #swagger.responses[200] = {  schema: {
+  /*
+  #swagger.tags = ['Login Activity']
+  #swagger.responses[200] = {  schema: {
     "user_logins": [
         {
             "_id": "61c890bbcbf275400d4ddbfc",
@@ -38,9 +38,9 @@ router.get("/show", authToken, async (req, res, _next) => {
             "current": true
         }
     ]
-}, description: 'Get all User Logins' } */
-  /* #swagger.responses[400] = {  schema: { error: "Bad Request" }, description: 'Unauthorized' } */
-
+  }, description: 'Get all User Logins' }
+  #swagger.responses[400] = {  schema: { error: "Bad Request" }, description: 'Unauthorized' }
+*/
   const user = await User.findOne({ _id: req.user.id });
 
   if (user) {
@@ -71,10 +71,10 @@ router.get("/show", authToken, async (req, res, _next) => {
   return res.status(400).json({ error: "Bad Request" });
 });
 
-// DELETE LA ID - /user/logins/delete/:login_id
 router.get("/delete/:login_id", authToken, async (req, res, _next) => {
-  // #swagger.tags = ['Login Activity']
-  /* #swagger.responses[200] = {  schema: {
+  /*
+  #swagger.tags = ['Login Activity']
+  #swagger.responses[200] = {  schema: {
     "deleted": true,
     "userLogin": {
         "_id": "61c890bbcbf275400d4ddbfc",
@@ -89,9 +89,9 @@ router.get("/delete/:login_id", authToken, async (req, res, _next) => {
         "device": "PostmanRuntime/7.28.4",
         "__v": 0
     }
-}, description: 'Delete selected user login from token ID' } */
-  /* #swagger.responses[400] = {  schema: { error: "Bad Request" }, description: 'Unauthorized' } */
-
+  }, description: 'Delete selected user login from token ID' }
+  #swagger.responses[400] = {  schema: { error: "Bad Request" }, description: 'Unauthorized' }
+*/
   const user = await User.findOne({ _id: req.user.id });
   if (user) {
     const userLogin = await UserLogin.findOne({
@@ -113,10 +113,10 @@ router.get("/delete/:login_id", authToken, async (req, res, _next) => {
   return res.status(400).json({ error: "Bad Request" });
 });
 
-// DELETE OTHERS - /user/logins/delete/all/not-current
 router.get("/delete/all/not-current", authToken, async (req, res, _next) => {
-  // #swagger.tags = ['Login Activity']
-  /* #swagger.responses[200] = {  schema: {
+  /*
+  #swagger.tags = ['Login Activity']
+  #swagger.responses[200] = {  schema: {
     "deleted": true,
     "userLogin": [
         {
@@ -133,9 +133,9 @@ router.get("/delete/all/not-current", authToken, async (req, res, _next) => {
             "__v": 0
         }
     ]
-}, description: 'Log out from all devices except current' } */
-  /* #swagger.responses[400] = {  schema: { error: "Bad Request" }, description: 'Unauthorized' } */
-
+  }, description: 'Log out from all devices except current' }
+  #swagger.responses[400] = {  schema: { error: "Bad Request" }, description: 'Unauthorized' }
+*/
   const user = await User.findOne({ _id: req.user.id });
   if (user) {
     const userLogins = await UserLogin.find({ userId: user.id });
@@ -165,10 +165,10 @@ router.get("/delete/all/not-current", authToken, async (req, res, _next) => {
   return res.status(400).json({ error: "Bad Request" });
 });
 
-// DELETE ALL - /user/logins/deletes/all
 router.get("/deletes/all", authToken, async (req, res, _next) => {
-  // #swagger.tags = ['Login Activity']
-  /* #swagger.responses[200] = {  schema: {
+  /*
+  #swagger.tags = ['Login Activity']
+  #swagger.responses[200] = {  schema: {
     "deleted": true,
     "user_login": [
         {
@@ -198,9 +198,9 @@ router.get("/deletes/all", authToken, async (req, res, _next) => {
             "__v": 0
         },
     ]
-}, description: 'Logout from all devices.' } */
-  /* #swagger.responses[400] = {  schema: { error: "Bad Request" }, description: 'Unauthorized' } */
-
+  }, description: 'Logout from all devices.' }
+  #swagger.responses[400] = {  schema: { error: "Bad Request" }, description: 'Unauthorized' }
+*/
   const user = await User.findOne({ _id: req.user.id });
   if (user) {
     const userLogins = await UserLogin.find({ userId: user.id });

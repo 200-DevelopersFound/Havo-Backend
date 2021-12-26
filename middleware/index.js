@@ -3,9 +3,10 @@ const BlacklistToken = require("../models/blacklistToken");
 const UserLogin = require("../models/userLogin");
 
 const authToken = async (req, res, next) => {
-  /* #swagger.responses[401] = {  schema: { error: "Token BlackListed" }, description: 'Unauthorized' } */
-  /* #swagger.responses[403] = {  schema: { error: "Forbidden" }, description: 'Forbidden' } */
-
+  /* 
+  #swagger.responses[401] = {  schema: { error: "Token BlackListed" }, description: 'Unauthorized' }
+  #swagger.responses[403] = {  schema: { error: "Forbidden" }, description: 'Forbidden' }
+  */
   const authHeader = req.headers["authorization"];
 
   // const bearer = authHeader && authHeader.split(" ")[0];
@@ -27,7 +28,7 @@ const authToken = async (req, res, next) => {
             tokenId: payload.token_id,
           });
           if (login.tokenDeleted == true) {
-            const blacklist_token = BlacklistToken.create({
+            const blacklist_token = await BlacklistToken.create({
               token: token,
             });
             return res.status(401).json({ error: "Token Blacklisted." });

@@ -1,19 +1,16 @@
 const express = require("express");
-const sendMail = require("../api/nodemailer");
 const router = express.Router();
-// const { User } = require("../models");
 const User = require("../models/user");
 const BlacklistToken = require("../models/blacklistToken");
 const OTP = require("../models/otp");
 const UserLogin = require("../models/userLogin");
 
-/* GET home page. */
 router.get("/", (_req, res, _next) => {
   // #swagger.tags = ['API Docs']
   res.redirect("/api-docs");
 });
 
-router.get("/deleteEverything", (_req, res, next) => {
+router.get("/deleteEverything", (_req, res) => {
   let ob = {};
   User.deleteMany({}, (err, payload) => {
     if (err) ob["User"] = err;

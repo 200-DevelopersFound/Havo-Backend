@@ -10,44 +10,36 @@ const customId = require("custom-id-new");
 const date = require("../util/date");
 const authToken = require("../middleware");
 
-// CREATE USER - /users/create
 router.post("/create", async (req, res) => {
-  // #swagger.tags = ['User']
-  /* #swagger.responses[200] = {  schema: { "auth": true, "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYzZlMmZmMTYyMDUyZmNiYjI0OGZlYyIsInRva2VuX2lkIjoiODc5OEdUREQyODI2WkZQQiIsImlhdCI6MTY0MDQyNDE5Mn0.89JxJwWzT3DMSGCX3zQtPpf5rgSSJVS2cvpDwHUn-4U", "message": "User created and Logged in" }, description: 'Create User in database with proper credentials.' } */
-  /*  #swagger.parameters['obj'] = {
-                in: 'body',
-                description: 'User SignUP Information',
-                required: true,
-                schema: { username : "Username - NoobMaster69", email : "XXXXXX@yyyy.com", password : "User-password"}
-        } */
-  /* #swagger.responses[400] = {
-        description: 'Multiple 400 errors',
-        schema: { 
-          DetailsNotFound_Error : { error: "Username, Email, Password not found" },
-          UsernameNotFound_Error : { error: "Username not found" },
-          EmailNotFound_Error : { error: "Email not Found" },
-          PasswordNotFound_Error : { error: "Password not Found" },
-        },
-       }
-      */
-  /* #swagger.responses[409] = {
-        description: 'Multiple 409 errors',
-        schema: { 
-          UserEmail_Error : { error: "User Email already found." },
-          UserName_Error : { error: "Username already used." },
-        },
-       }
-      */
-  /* #swagger.responses[401] = {
-        description: 'Multiple 401 errors',
-        schema: { 
-          UserEmailNotVerified_Error : { error: "Email not verified" },
-          OTPNotVerified_Error : { error: "OTP not verified" },
-        },
-       }
-      */
-  // #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Internal Server Error occured' }
-
+  /*
+  #swagger.tags = ['User']
+  #swagger.responses[200] = {  schema: { "auth": true, "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYzZlMmZmMTYyMDUyZmNiYjI0OGZlYyIsInRva2VuX2lkIjoiODc5OEdUREQyODI2WkZQQiIsImlhdCI6MTY0MDQyNDE5Mn0.89JxJwWzT3DMSGCX3zQtPpf5rgSSJVS2cvpDwHUn-4U", "message": "User created and Logged in" }, description: 'Create User in database with proper credentials.' }
+  #swagger.parameters['obj'] = { in: 'body', description: 'User SignUP Information', required: true, schema: { username : "Username - NoobMaster69", email : "XXXXXX@yyyy.com", password : "User-password"}}
+  #swagger.responses[400] = {
+    description: 'Multiple 400 errors',
+    schema: {
+      DetailsNotFound_Error : { error: "Username, Email, Password not found" },
+      UsernameNotFound_Error : { error: "Username not found" },
+      EmailNotFound_Error : { error: "Email not Found" },
+      PasswordNotFound_Error : { error: "Password not Found" },
+    },
+  }
+  #swagger.responses[409] = {
+    description: 'Multiple 409 errors',
+    schema: {
+      UserEmail_Error : { error: "User Email already found." },
+      UserName_Error : { error: "Username already used." },
+    },
+  }
+  #swagger.responses[401] = {
+    description: 'Multiple 401 errors',
+    schema: {
+      UserEmailNotVerified_Error : { error: "Email not verified" },
+      OTPNotVerified_Error : { error: "OTP not verified" },
+    },
+  }
+  #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Internal Server Error occured' }
+*/
   try {
     const { username, email, password } = req.body;
 
@@ -70,7 +62,7 @@ router.post("/create", async (req, res) => {
       return res.status(409).json({ error: "Username already used." });
 
     const emailVerified = await OTP.findOne({ email: email });
-    console.log(emailVerified);
+
     if (!emailVerified)
       return res.status(401).json({ error: "Email not verified" });
     if (!emailVerified.verified)
@@ -98,29 +90,34 @@ router.post("/create", async (req, res) => {
   }
 });
 
-// LOGIN USER - /users/login
 router.post("/login", async (req, res) => {
-  // #swagger.tags = ['User']
-  /* #swagger.responses[200] = {  schema: { "auth": true, "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYzg5MGJiY2JmMjc1NDAwZDRkZGJmOSIsInRva2VuX2lkIjoiOTEwOVpGTVAxMDE0RUFBVSIsImlhdCI6MTY0MDUzNDI5N30.x92jESKmKLYFp1VbHBM9JMbUh8jfmR56ChrTIBb0_II", "message": "User found and Logged in"
-}, description: 'User logged in' } */
-  /*  #swagger.parameters['obj'] = {
-                in: 'body',
-                description: 'User Login Information',
-                required: true,
-                schema: { email : "XXXXXX@yyyy.com", password : "User-password"}
-        } */
-  /* #swagger.responses[400] = {
-        description: 'Multiple 400 errors',
-        schema: { 
-          DetailsNotFound_Error : { error: "Email, Password not found" },
-          EmailNotFound_Error : { error: "Email not Found" },
-          PasswordNotFound_Error : { error: "Password not Found" },
-          InvalidCredentials_Error : { error: "Password not Found" },
-        },
-       }
-      */
-  // #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Internal Server Error occured' }
-
+  /*
+  #swagger.tags = ['User']
+  #swagger.responses[200] = {
+    schema: {
+      "auth": true,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYzg5MGJiY2JmMjc1NDAwZDRkZGJmOSIsInRva2VuX2lkIjoiOTEwOVpGTVAxMDE0RUFBVSIsImlhdCI6MTY0MDUzNDI5N30.x92jESKmKLYFp1VbHBM9JMbUh8jfmR56ChrTIBb0_II",
+      "message": "User found and Logged in"
+    },
+    description: 'User logged in'
+  }
+  #swagger.parameters['obj'] = {
+    in: 'body',
+    description: 'User Login Information',
+    required: true,
+    schema: { email : "XXXXXX@yyyy.com", password : "User-password"}
+  }
+  #swagger.responses[400] = {
+    description: 'Multiple 400 errors',
+    schema: {
+      DetailsNotFound_Error : { error: "Email, Password not found" },
+      EmailNotFound_Error : { error: "Email not Found" },
+      PasswordNotFound_Error : { error: "Password not Found" },
+      InvalidCredentials_Error : { error: "Password not Found" },
+    },
+  }
+  #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Internal Server Error occured' }
+*/
   try {
     const { email, password } = req.body;
 
@@ -150,7 +147,6 @@ router.post("/login", async (req, res) => {
       res.status(400).json({ error: "Invalid Credentials" });
     }
   } catch (err) {
-    console.log(err);
     return res.status(500).json({ error: err });
   }
 });
@@ -161,17 +157,19 @@ router.delete("/logout", blacklistToken, async (req, res) => {
 });
 
 router.post("/forget/password", async (req, res, next) => {
-  // #swagger.tags = ['User']
-  /* #swagger.responses[200] = {  schema: { message: "Password reset OTP sent to user`s registered Email Id" }, description: 'User logged in' } */
-  /*  #swagger.parameters['obj'] = {
-                in: 'body',
-                description: 'Registered Email Id',
-                required: true,
-                schema: { email : "XXXXXX@yyyy.com"}
-        } */
-  /* #swagger.responses[400] = {  schema: { error: "Email not found" }, description: 'User not found' } */
-  /* #swagger.responses[404] = {  schema: { error: "User not found" }, description: 'User not found' } */
-
+  /*
+  #swagger.tags = ['User']
+  #swagger.responses[200] = {  schema: { message: "Password reset OTP sent to user`s registered Email Id" }, description: 'User logged in' }
+  #swagger.parameters['obj'] = {
+    in: 'body',
+    description: 'Registered Email Id',
+    required: true,
+    schema: { email : "XXXXXX@yyyy.com"}
+  }
+  #swagger.responses[400] = { schema: { error: "Email not found" }, description: 'User not found' }
+  #swagger.responses[404] = { schema: { error: "User not found" }, description: 'User not found' }
+  #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Error occured' }
+*/
   try {
     const { email } = req.body;
     if (!email) return res.status(400).json({ error: "Email not found" });
@@ -196,34 +194,34 @@ router.post("/forget/password", async (req, res, next) => {
         });
     });
   } catch (err) {
-    // #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Error occured' }
     return next(err.message);
   }
 });
 
 router.post("/update/password", async (req, res, next) => {
-  // #swagger.tags = ['User']
-  /* #swagger.responses[200] = {  schema: { message: "Password reset OTP sent to user`s registered Email Id" }, description: 'User logged in' } */
-  /* #swagger.parameters['obj'] = {
-                in: 'body',
-                description: 'Update User Password without logged in.',
-                required: true,
-                schema: {  resetPasswordToken: "AB12CD2", password : "XXXAAABB", email : "XXXXXX@yyyy.com"}
-        } */
-  /* #swagger.responses[400] = {  
-    description: 'Multiple 400 Errors',
-    schema: {
-    ResetPasswordTokenNotFound_Error : { error: "Reset Password Token not provided" }, 
-    PasswordNotFound_Error : { error: "Password not provided" },
-    OTPExpired_Error : { error: "OTP Expired" },
-    EmailNotFound_Error : { error: "Email not Expired" }
+  /*
+    #swagger.tags = ['User']
+    #swagger.responses[200] = {  schema: { message: "Password reset OTP sent to user`s registered Email Id" }, description: 'User logged in' }
+    #swagger.parameters['obj'] = {
+      in: 'body',
+      description: 'Update User Password without logged in.',
+      required: true,
+      schema: {  resetPasswordToken: "AB12CD2", password : "XXXAAABB", email : "XXXXXX@yyyy.com"}
     }
-  }
-    */
-  /* #swagger.responses[404] = {  schema: { error: "No user found with this Email ID" }, description: 'User not found' } */
-  /* #swagger.responses[204] = {  schema: { status: "Password reset successfull" }, description: 'User logged in' } */
-  /* #swagger.responses[401] = {  schema: { error: "Unauthorized" }, description: 'User logged in' } */
-
+    #swagger.responses[400] = {
+      description: 'Multiple 400 Errors',
+      schema: {
+      ResetPasswordTokenNotFound_Error : { error: "Reset Password Token not provided" },
+      PasswordNotFound_Error : { error: "Password not provided" },
+      OTPExpired_Error : { error: "OTP Expired" },
+      EmailNotFound_Error : { error: "Email not Expired" }
+      }
+    }
+    #swagger.responses[404] = {  schema: { error: "No user found with this Email ID" }, description: 'User not found' }
+    #swagger.responses[204] = {  schema: { status: "Password reset successfull" }, description: 'User logged in' }
+    #swagger.responses[401] = {  schema: { error: "Unauthorized" }, description: 'User logged in' }
+    #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Error occured' }
+*/
   try {
     let currentdate = new Date();
     const { email, resetPasswordToken, password } = req.body;
@@ -253,7 +251,6 @@ router.post("/update/password", async (req, res, next) => {
           return res.status(401).json({ error: "Unauthorized" });
         }
       } else {
-        // token expired
         dbUser.resetPasswordToken = null;
         dbUser.resetPasswordExpiry = null;
         await dbUser.save();
@@ -263,26 +260,25 @@ router.post("/update/password", async (req, res, next) => {
       return res
         .status(404)
         .json({ error: "No user found with this Email ID" });
-      // user doesnot exist
     }
   } catch (error) {
-    // #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Error occured' }
     return next(error.message);
   }
 });
-// });
 
 router.put("/update/user/password", authToken, async (req, res) => {
-  // #swagger.tags = ['User']
-  /* #swagger.responses[204] = {  schema: { status: "Password update successfull" }, description: 'User logged in' } */
-  /*  #swagger.parameters['obj'] = {
-                in: 'body',
-                description: 'Update User Password when logged in',
-                required: true,
-                schema: { password : "XXXXXXewfefyyy"}
-        } */
-  /* #swagger.responses[400] = {  schema: { error: "Bad Request" }, description: 'User not found' } */
-
+  /*
+  #swagger.tags = ['User']
+  #swagger.responses[204] = {  schema: { status: "Password update successfull" }, description: 'User logged in' }
+  #swagger.parameters['obj'] = {
+    in: 'body',
+    description: 'Update User Password when logged in',
+    required: true,
+    schema: { password : "XXXXXXewfefyyy"}
+  }
+  #swagger.responses[400] = {  schema: { error: "Bad Request" }, description: 'User not found' }
+  #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Error occured' }
+*/
   try {
     const { password } = req.body;
     const user = await User.findOne({ _id: req.user.id });
@@ -293,7 +289,6 @@ router.put("/update/user/password", authToken, async (req, res) => {
     }
     return res.status(400).json({ error: "Bad Request" });
   } catch (error) {
-    // #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Error occured' }
     return next(error.message);
   }
 });

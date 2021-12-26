@@ -7,13 +7,17 @@ const OTP = require("../models/otp");
 const date = require("../util/date");
 
 router.post("/trigger/otp", async (req, res, next) => {
-  // #swagger.tags = ['Email']
-  // #swagger.parameters['email'] = { in: 'body', description: 'Email id required for OTP', required: true, schema: { email: '200shreyans@gmail.com' }}
+  /*
+    #swagger.tags = ['Email']
+    #swagger.parameters['email'] = { in: 'body', description: 'Email id required for OTP', required: true, schema: { email: '200shreyans@gmail.com' }}
+    #swagger.responses[400] = {  schema: { error: "Email not provided" }, description: 'Email not provided.' }
+    #swagger.responses[200] = { schema: { "verification_key": "U2FsdGVkX1+ZMdUr8NfZX/FCeKFc1fdrnsVm1AONDODv6kxbHuQ/8ZoQcrAN2zmxUZUBWFn6ihnpHW+s/gNpc+Mg4pxk++JoMix1N3stdI4aAYSKdYsPx+V/tqvSgOGijabkUW1kRLcwWeMlTJO/2Q==" } , description: "OTP sent to user" }
+    #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Error occured' }
+  */
   try {
     const { email } = req.body;
     if (!email) {
       return res.status(400).json({ error: "Email not provided" });
-      /* #swagger.responses[400] = {  schema: { error: "Email not provided" }, description: 'Email not provided.' } */
     }
     const otp = otpGenerator.generate(6, {
       alphabets: false,
@@ -36,41 +40,40 @@ router.post("/trigger/otp", async (req, res, next) => {
       } else {
         return res.json({ verification_key: encoded });
       }
-      // #swagger.responses[200] = { schema: { "verification_key": "U2FsdGVkX1+ZMdUr8NfZX/FCeKFc1fdrnsVm1AONDODv6kxbHuQ/8ZoQcrAN2zmxUZUBWFn6ihnpHW+s/gNpc+Mg4pxk++JoMix1N3stdI4aAYSKdYsPx+V/tqvSgOGijabkUW1kRLcwWeMlTJO/2Q==" } , description: "OTP sent to user" }
     });
   } catch (err) {
-    // #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Error occured' }
     return next(err.message);
   }
 });
 
-// VERIFY OTP - /email/verify/otp
 router.post("/verify/otp", async (req, res, next) => {
-  // #swagger.tags = ['Email']
+  /*
+  #swagger.tags = ['Email']
+  #swagger.parameters['obj'] = {
+    in: 'body',
+    description: 'OTP Information',
+    required: true,
+    schema: { verification_key : "Verification Key from trigger OTP", otp : "XXXXXX", check : "Email ID to be verified"}
+  }
+  #swagger.responses[400] = {
+    description: 'Multiple 400 errors',
+    schema: {
+    VerificationKey_Error : { error: "Verification_key not provided" },
+    OTP_Error : { error: "OTP not provided" },
+    WrongKey_Error_or_CorouptedKey_Error : {error : "Verification key corupted"},
+    Check_Error : {error : "Email ID Incorrect"},
+    WrongOtp_Error : {error : "OTP NOT Matched"},
+    OTPExpired_Error : {error : "OTP Expired"},
+    OTPAlreadyUsed_Error : {error : "OTP already used"},
+    BadRequest_Error : {error : "Bad Request"}
+    },
+  }
+  #swagger.responses[200] = { schema: { "status": "SUCCESS", "message": "OTP Matched", "check": "200shreyans@gmail.com" } , description: "OTP verified by user" }
+  #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Error occured' }
+*/
   try {
     let currentdate = new Date();
-    // verificationKey, otp, email
-    /*  #swagger.parameters['obj'] = {
-                in: 'body',
-                description: 'OTP Information',
-                required: true,
-                schema: { verification_key : "Verification Key from trigger OTP", otp : "XXXXXX", check : "Email ID to be verified"}
-        } */
-    /* #swagger.responses[400] = { 
-        description: 'Multiple 400 errors',
-        schema: { 
-          VerificationKey_Error : { error: "Verification_key not provided" },
-          OTP_Error : { error: "OTP not provided" },
-          WrongKey_Error_or_CorouptedKey_Error : {error : "Verification key corupted"},
-          Check_Error : {error : "Email ID Incorrect"},
-          WrongOtp_Error : {error : "OTP NOT Matched"},
-          OTPExpired_Error : {error : "OTP Expired"},
-          OTPAlreadyUsed_Error : {error : "OTP already used"},
-          BadRequest_Error : {error : "Bad Request"}
-        },
-       }
-      */
-    // #swagger.responses[200] = { schema: { "status": "SUCCESS", "message": "OTP Matched", "check": "200shreyans@gmail.com" } , description: "OTP verified by user" }
+
     const { verification_key, otp, check } = req.body;
     if (!verification_key) {
       return res.status(400).json({ error: "Verification_key not provided" });
@@ -98,7 +101,6 @@ router.post("/verify/otp", async (req, res, next) => {
           if (otp === otp_instance.otp) {
             otp_instance.verified = true;
             otp_instance.save();
-            console.log(otp_instance);
             const response = {
               status: "SUCCESS",
               message: "OTP Matched",
@@ -118,7 +120,6 @@ router.post("/verify/otp", async (req, res, next) => {
       return res.status(400).json({ error: "Bad Request" });
     }
   } catch (err) {
-    // #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Error occured' }
     return next(err.message);
   }
 });
