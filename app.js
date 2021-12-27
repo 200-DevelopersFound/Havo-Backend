@@ -15,6 +15,11 @@ const app = express();
 const bodyParser = require("body-parser"); //add this
 
 require("./config/database").connect();
+// require("./models/blacklistToken");
+// require("./models/category");
+// require("./models/otp");
+// require("./models/user");
+// require("./models/userLogin");
 
 app.use(cors());
 app.use(logger("dev"));
