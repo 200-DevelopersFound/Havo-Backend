@@ -27,6 +27,11 @@ const authToken = async (req, res, next) => {
             userId: payload.id,
             tokenId: payload.token_id,
           });
+          if (login == null)
+            return res
+              .status(401)
+              .json({ error: "Unauthorized. User Login not found." });
+
           if (login.tokenDeleted == true) {
             const blacklist_token = await BlacklistToken.create({
               token: token,
