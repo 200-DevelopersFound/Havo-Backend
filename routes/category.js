@@ -4,6 +4,42 @@ const User = require("../models/user");
 const authToken = require("../middleware");
 const Category = require("../models/category");
 
+router.post("/get", authToken, async (req, res, next) => {
+  /*
+  #swagger.tags = ['User Category']
+  #swagger.parameters['obj'] = {
+    in: 'body',
+    description: 'Update user dialogue',
+    required: true,
+    schema: {
+    }
+  }
+  #swagger.responses[200] = {  schema: [
+    {
+        "_id": "61c8af95598a5a9b7a56ee92",
+        "title": "INTRO",
+        "dialogues": [
+            "abcd"
+        ],
+        "__v": 1
+    },
+  ], description: 'User Cateories' }
+  #swagger.responses[400] = {  schema: { error: "Bad Request" }, description: 'User not found' }
+  #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Error occured' }
+*/
+  try {
+    const user = await User.findOne({ _id: req.user.id }).populate(
+      "categories"
+    );
+    if (user) {
+      return res.status(200).json(user.categories);
+    }
+    return res.status(400).json({ error: "Bad Request" });
+  } catch (error) {
+    return next(error.message);
+  }
+});
+
 router.post("/create/category", authToken, async (req, res, next) => {
   /*
   #swagger.tags = ['User Category']
