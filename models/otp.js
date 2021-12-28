@@ -3,7 +3,7 @@ const validateEmail = require("../util/validateEmail");
 
 const otpSchema = new mongoose.Schema({
   createdAt: { type: Date, default: new Date().getTime() },
-  expirationTime: { type: Date, default: new Date().getTime() + 1000000 },
+  expirationTime: { type: Date, default: new Date().getTime() + 172800000 },
   otp: { type: String },
   verified: { type: Boolean, default: false },
   email: {
