@@ -100,6 +100,14 @@
                 "password": {
                   "type": "string",
                   "example": "User-password"
+                },
+                "fName": {
+                  "type": "string",
+                  "example": "Noob"
+                },
+                "lName": {
+                  "type": "string",
+                  "example": "Master"
                 }
               }
             }
@@ -1518,6 +1526,128 @@
                 "name": "main"
               }
             }
+          }
+        }
+      }
+    },
+    "/user/category/get": {
+      "post": {
+        "tags": [
+          "User Category"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Update user dialogue",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User Cateories",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "example": "61c8af95598a5a9b7a56ee92"
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "INTRO"
+                  },
+                  "dialogues": {
+                    "type": "array",
+                    "example": [
+                      "abcd"
+                    ],
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "__v": {
+                    "type": "number",
+                    "example": 1
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "User not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad Request"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Token BlackListed"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Forbidden"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Error message"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "Error occured"
           }
         }
       }

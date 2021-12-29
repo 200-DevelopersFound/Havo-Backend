@@ -14,7 +14,14 @@ router.post("/create", async (req, res) => {
   /*
   #swagger.tags = ['User']
   #swagger.responses[200] = {  schema: { "auth": true, "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYzZlMmZmMTYyMDUyZmNiYjI0OGZlYyIsInRva2VuX2lkIjoiODc5OEdUREQyODI2WkZQQiIsImlhdCI6MTY0MDQyNDE5Mn0.89JxJwWzT3DMSGCX3zQtPpf5rgSSJVS2cvpDwHUn-4U", "message": "User created and Logged in" }, description: 'Create User in database with proper credentials.' }
-  #swagger.parameters['obj'] = { in: 'body', description: 'User SignUP Information', required: true, schema: { username : "Username - NoobMaster69", email : "XXXXXX@yyyy.com", password : "User-password"}}
+  #swagger.parameters['obj'] = { in: 'body', description: 'User SignUP Information', required: true, 
+  schema: { 
+    username : "Username - NoobMaster69", 
+    email : "XXXXXX@yyyy.com", 
+    password : "User-password",
+    fName: "Noob", 
+    lName: "Master",
+  }}
   #swagger.responses[400] = {
     description: 'Multiple 400 errors',
     schema: {
@@ -41,7 +48,7 @@ router.post("/create", async (req, res) => {
   #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Internal Server Error occured' }
 */
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, fName, lName } = req.body;
 
     if (!(username && email && password))
       return res
@@ -52,6 +59,10 @@ router.post("/create", async (req, res) => {
     else if (!email) return res.status(400).json({ error: "Email not Found" });
     else if (!password)
       return res.status(400).json({ error: "Password not Found" });
+    else if (!fName)
+      return res.status(400).json({ error: "First Name not Found" });
+    else if (!lName)
+      return res.status(400).json({ error: "Last Name not Found" });
 
     const dbUserEmail = await User.findOne({ email });
     if (dbUserEmail)
@@ -69,7 +80,9 @@ router.post("/create", async (req, res) => {
       return res.status(401).json({ error: "OTP not verified" });
 
     const newUser = await User.create({
-      username,
+      firstName: fName,
+      lastName: lName,
+      username: username,
       email: email.toLowerCase(),
       password: await bcrypt.hash(password, 10),
     });
