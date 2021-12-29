@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
+let userSchema = new mongoose.Schema({
   username: { type: String, default: null, required: true, unique: true },
   firstName: { type: String, default: "" },
   lastName: { type: String, default: "" },
@@ -17,4 +17,18 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
-module.exports = mongoose.model("User", userSchema);
+userSchema.methods.removeFields = function () {
+  let obj = this.toObject();
+  const {
+    password,
+    token,
+    resetPasswordExpiry,
+    resetPasswordToken,
+    categories,
+    ...updatedObject
+  } = obj;
+  return updatedObject;
+};
+const model = mongoose.model("User", userSchema);
+
+module.exports = model;

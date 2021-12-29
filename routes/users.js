@@ -19,8 +19,8 @@ router.post("/create", async (req, res) => {
     username : "Username - NoobMaster69", 
     email : "XXXXXX@yyyy.com", 
     password : "User-password",
-    fName: "Noob", 
-    lName: "Master",
+    fname: "Noob", 
+    lname: "Master",
   }}
   #swagger.responses[400] = {
     description: 'Multiple 400 errors',
@@ -48,7 +48,7 @@ router.post("/create", async (req, res) => {
   #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Internal Server Error occured' }
 */
   try {
-    const { username, email, password, fName, lName } = req.body;
+    const { username, email, password, fname, lname } = req.body;
 
     if (!(username && email && password))
       return res
@@ -59,9 +59,9 @@ router.post("/create", async (req, res) => {
     else if (!email) return res.status(400).json({ error: "Email not Found" });
     else if (!password)
       return res.status(400).json({ error: "Password not Found" });
-    else if (!fName)
+    else if (!fname)
       return res.status(400).json({ error: "First Name not Found" });
-    else if (!lName)
+    else if (!lname)
       return res.status(400).json({ error: "Last Name not Found" });
 
     const dbUserEmail = await User.findOne({ email });
@@ -80,8 +80,8 @@ router.post("/create", async (req, res) => {
       return res.status(401).json({ error: "OTP not verified" });
 
     const newUser = await User.create({
-      firstName: fName,
-      lastName: lName,
+      firstName: fname,
+      lastName: lname,
       username: username,
       email: email.toLowerCase(),
       password: await bcrypt.hash(password, 10),
@@ -99,7 +99,7 @@ router.post("/create", async (req, res) => {
     };
     return res.status(200).json(responseOb);
   } catch (err) {
-    return res.status(500).json({ error: err });
+    return res.status(500).json({ error: err.message });
   }
 });
 
@@ -150,17 +150,19 @@ router.post("/login", async (req, res) => {
       };
       req.token = await createToken(req);
       res.setHeader("x-auth-token", req.token);
+      const us = await dbUser.removeFields();
       const responseOb = {
         auth: true,
         token: req.token,
         message: "User found and Logged in",
+        user: us,
       };
       return res.status(200).json(responseOb);
     } else {
       res.status(400).json({ error: "Invalid Credentials" });
     }
   } catch (err) {
-    return res.status(500).json({ error: err });
+    return res.status(500).json({ error: err.message });
   }
 });
 
@@ -251,7 +253,7 @@ router.post("/update/password", async (req, res, next) => {
     }
 
     const dbUser = await User.findOne({ email });
-    console.log(dbUser);
+
     if (dbUser != null) {
       if (date.compare(dbUser.resetPasswordExpiry, currentdate) == 1) {
         if (resetPasswordToken == dbUser.resetPasswordToken) {
