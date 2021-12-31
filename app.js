@@ -8,7 +8,6 @@ const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const emailRouter = require("./routes/email");
 const loginRouter = require("./routes/loginActivity");
-const categoryRouter = require("./routes/category");
 
 const app = express();
 const bodyParser = require("body-parser"); //add this
@@ -28,7 +27,6 @@ app.use("/", indexRouter);
 app.use("/user", usersRouter);
 app.use("/email", emailRouter);
 app.use("/user/logins", loginRouter);
-app.use("/user/category", categoryRouter);
 
 app.use((err, _req, res, _next) => {
   res.status(500).json({ error: err });

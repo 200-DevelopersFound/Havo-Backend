@@ -28,10 +28,6 @@ const doc = {
       description: "Sign Up , Login and Logout users",
     },
     {
-      name: "User Category",
-      description: "User`s categories and dialogue",
-    },
-    {
       name: "Login Activity",
       description: "Login Activity routes",
     },
@@ -67,13 +63,6 @@ const doc = {
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYmY3N2M4MTcwMWYwM2QxMGZkOTBlYyIsInRva2VuX2lkIjoiMzkwMk9HRUwwOTEzREFESiIsImlhdCI6MTYzOTkzNzk5Mn0.noLtLpwevdnkhFU9uOKepT2Ynd-rjnRCCeLA3yd323g",
       resetPasswordExpiry:
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYmY3N2M4MTcwMWYwM2QxMGZkOTBlYyIsInRva2VuX2lkIjoiMzkwMk9HRUwwOTEzREFESiIsImlhdCI6MTYzOTkzNzk5Mn0.noLtLpwevdnkhFU9uOKepT2Ynd-rjnRCCeLA3yd323g",
-      categories: [
-        {
-          _id: "61c8af95598a5a9a7a56ee92",
-          title: "INTRO",
-          dialogues: ["abcd"],
-        },
-      ],
     },
     UserLogin: {
       userId: "61bcd94c9975fe02148587b1",
@@ -85,11 +74,6 @@ const doc = {
       tokenSecret: "22449244HBUBSKAF22929924JYKKLORN",
       tokenDeleted: true,
       device: "PostmanRuntime/7.28.4",
-    },
-    Category: {
-      _id: "61c8af95598a5a9b7a56ee92",
-      title: "INTRO",
-      dialogues: ["abcd"],
     },
   },
 };
