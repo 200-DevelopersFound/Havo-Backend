@@ -2,8 +2,8 @@
   "swagger": "2.0",
   "info": {
     "version": "3.0.0",
-    "title": "Handwriter Express Application",
-    "description": "Handwriter Express Application Routes"
+    "title": "Havo Express Application",
+    "description": "Havo Express Application Routes"
   },
   "host": "handwritingbackend.herokuapp.com",
   "basePath": "/",
@@ -101,11 +101,11 @@
                   "type": "string",
                   "example": "User-password"
                 },
-                "fName": {
+                "fname": {
                   "type": "string",
                   "example": "Noob"
                 },
-                "lName": {
+                "lname": {
                   "type": "string",
                   "example": "Master"
                 }

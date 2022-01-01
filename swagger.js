@@ -6,8 +6,8 @@ const endpointsFiles = ["./app.js"];
 const doc = {
   info: {
     version: "3.0.0",
-    title: "Handwriter Express Application",
-    description: "Handwriter Express Application Routes",
+    title: "Havo Express Application",
+    description: "Havo Express Application Routes",
   },
   host: "handwritingbackend.herokuapp.com",
   basePath: "/",

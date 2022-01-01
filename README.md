@@ -20,9 +20,9 @@ To get the Node server running locally:
 
 The mobile appliction which uses heroku
 
-[🔥 Live Version](https://github.com/200-DevelopersFound/Handwriter/blob/main/Apk/app.apk?raw=true)
+[🔥 Live Version](https://github.com/200-DevelopersFound/Havo/blob/main/apk/app.apk?raw=true)
 
-[:star: Github Repository](https://github.com/200-DevelopersFound/Handwriter)
+[:star: Github Repository](https://github.com/200-DevelopersFound/Havo)
 
 ## Some Features
 
