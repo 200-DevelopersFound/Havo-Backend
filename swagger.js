@@ -9,7 +9,7 @@ const doc = {
     title: "Havo Express Application",
     description: "Havo Express Application Routes",
   },
-  host: "handwritingbackend.herokuapp.com",
+  host: "havobackend.herokuapp.com",
   basePath: "/",
   schemes: ["https"],
   consumes: ["application/json"],
