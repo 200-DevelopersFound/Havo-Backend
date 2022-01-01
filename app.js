@@ -8,6 +8,7 @@ const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const emailRouter = require("./routes/email");
 const loginRouter = require("./routes/loginActivity");
+const mobileRouter = require("./routes/mobile");
 
 const app = express();
 const bodyParser = require("body-parser"); //add this
@@ -23,10 +24,13 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use(bodyParser.json());
 
+app.set("view engine", "ejs");
+
 app.use("/", indexRouter);
 app.use("/user", usersRouter);
 app.use("/email", emailRouter);
 app.use("/user/logins", loginRouter);
+app.use("/", mobileRouter);
 
 app.use((err, _req, res, _next) => {
   res.status(500).json({ error: err });
