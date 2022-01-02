@@ -14,16 +14,23 @@ router.post("/get", authToken, async (req, res, next) => {
     schema: {
     }
   }
-  #swagger.responses[200] = {  schema: [
-    {
-        "_id": "61c8af95598a5a9b7a56ee92",
-        "title": "INTRO",
-        "dialogues": [
-            "abcd"
-        ],
-        "__v": 1
-    },
-  ], description: 'User Cateories' }
+  #swagger.responses[200] = {  schema: {
+    "categories": [
+        {
+            "_id": "61ccb8d09a3e4ab430fe7b80",
+            "title": "END",
+            "dialogues": [
+                "yyyyyyy",
+                "79",
+                "77858779",
+                "asd"
+            ],
+            "__v": 4
+        },
+    ],
+    "totalDialogues": 7,
+    "totalCategories": 4
+  }, description: 'User Cateories' }
   #swagger.responses[400] = {  schema: { error: "Bad Request" }, description: 'User not found' }
   #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Error occured' }
 */
@@ -32,7 +39,16 @@ router.post("/get", authToken, async (req, res, next) => {
       "categories"
     );
     if (user) {
-      return res.status(200).json(user.categories);
+      let totalDialogues = 0;
+      user.categories.forEach((ele) => {
+        totalDialogues += ele.dialogues.length;
+      });
+      return res.status(200).json({
+        categories: user.categories,
+        totalDialogues: totalDialogues,
+        totalCategories: user.categories.length,
+      });
+      // return res.status(200).json(user.categories);
     }
     return res.status(400).json({ error: "Bad Request" });
   } catch (error) {
@@ -49,14 +65,23 @@ router.post("/create/category", authToken, async (req, res, next) => {
                 required: true,
                 schema: { categoryName : "INTRO"}
         }
-   #swagger.responses[201] = {  schema: [
-    {
-        "_id": "61c8af95598a5a9b7a56ee92",
-        "title": "INTRO",
-        "dialogues": [],
-        "__v": 1
-    },
-  ], description: 'User Cateories' }
+   #swagger.responses[201] = {
+    "categories": [
+        {
+            "_id": "61ccb8d09a3e4ab430fe7b80",
+            "title": "END",
+            "dialogues": [
+                "yyyyyyy",
+                "79",
+                "77858779",
+                "asd"
+            ],
+            "__v": 4
+        },
+    ],
+    "totalDialogues": 7,
+    "totalCategories": 4
+  }, description: 'User Cateories' }
   #swagger.responses[400] = {  schema: { error: "Bad Request" }, description: 'User not found' }
   #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Error occured' }
 */
@@ -76,7 +101,15 @@ router.post("/create/category", authToken, async (req, res, next) => {
       await category.save();
       user.categories.push(category);
       await user.save();
-      return res.status(201).json(user.categories);
+      let totalDialogues = 0;
+      user.categories.forEach((ele) => {
+        totalDialogues += ele.dialogues.length;
+      });
+      return res.status(201).json({
+        categories: user.categories,
+        totalDialogues: totalDialogues,
+        totalCategories: user.categories.length,
+      });
     }
     return res.status(400).json({ error: "Bad Request" });
   } catch (error) {
@@ -96,16 +129,23 @@ router.post("/update/dialogue", authToken, async (req, res, next) => {
       "dialogue" : "abcd"
     }
   }
-  #swagger.responses[201] = {  schema: [
-    {
-        "_id": "61c8af95598a5a9b7a56ee92",
-        "title": "INTRO",
-        "dialogues": [
-            "abcd"
-        ],
-        "__v": 1
-    },
-  ], description: 'User Cateories' }
+  #swagger.responses[201] = {  schema: {
+    "categories": [
+        {
+            "_id": "61ccb8d09a3e4ab430fe7b80",
+            "title": "END",
+            "dialogues": [
+                "yyyyyyy",
+                "79",
+                "77858779",
+                "asd"
+            ],
+            "__v": 4
+        },
+    ],
+    "totalDialogues": 7,
+    "totalCategories": 4
+  }, description: 'User Cateories' }
   #swagger.responses[400] = {  schema: { error: "Bad Request" }, description: 'User not found' }
   #swagger.responses[500] = { schema: { error: "Error message" }, description: 'Error occured' }
 */
@@ -129,7 +169,15 @@ router.post("/update/dialogue", authToken, async (req, res, next) => {
         }
       });
       user.save();
-      return res.status(201).json(user.categories);
+      let totalDialogues = 0;
+      user.categories.forEach((ele) => {
+        totalDialogues += ele.dialogues.length;
+      });
+      return res.status(201).json({
+        categories: user.categories,
+        totalDialogues: totalDialogues,
+        totalCategories: user.categories.length,
+      });
     }
     return res.status(400).json({ error: "Bad Request" });
   } catch (error) {

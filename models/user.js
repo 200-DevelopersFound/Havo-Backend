@@ -29,6 +29,5 @@ userSchema.methods.removeFields = function () {
   } = obj;
   return updatedObject;
 };
-const model = mongoose.model("User", userSchema);
 
-module.exports = model;
+module.exports = mongoose.model("User", userSchema);
