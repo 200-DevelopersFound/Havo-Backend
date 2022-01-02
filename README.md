@@ -1,4 +1,4 @@
-<p align="center"><img src="./screenshots/0.png" width=300  align="center"></p>
+<p align="center"><img src="./screenshots/0.png" width=200  align="center"></p>
 <h1 align="center">Havo</h1>
 <p align="center"><img align="center" src="https://api.travis-ci.com/travis-ci/travis-web.svg" alt="build:passed"></p>
 
