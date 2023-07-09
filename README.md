@@ -4,7 +4,9 @@
 
 # Getting started
 
-The backend written in Node JS for mobile application which is used to convert handwriting to speech via Machine Learning Library. This application is for the people who are unable to speak, by helping them save their daily conversation in the form of phrases. The server provides authentication via email OTP and JSON Web Token to help the user to secure their data. User can log on to multiple devices and stay logged in for a longer period of time.
+The Node.js backend for the mobile application is designed with a specific goal in mind: to assist individuals who are unable to speak. By integrating a powerful Machine Learning Library, the backend enables the conversion of handwritten text into speech, providing a means for users to save their daily conversations in the form of phrases.
+
+One of the key aspects of this backend is its robust authentication system. The server implements authentication through email OTP (One-Time Password) and JSON Web Tokens (JWT). When a user registers or logs in, an OTP is sent to their email for verification. Once verified, a JWT is issued, which serves as a secure token for subsequent authenticated requests. This two-step authentication process ensures the privacy and security of user data.
 
 [🔥 Live Version](https://havo-backend.onrender.com/)
 
