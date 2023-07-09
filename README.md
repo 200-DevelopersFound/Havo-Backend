@@ -6,7 +6,7 @@
 
 The backend written in Node JS for mobile application which is used to convert handwriting to speech via Machine Learning Library. This application is for the people who are unable to speak, by helping them save their daily conversation in the form of phrases. The server provides authentication via email OTP and JSON Web Token to help the user to secure their data. User can log on to multiple devices and stay logged in for a longer period of time.
 
-[🔥 Live Version](https://havobackend.herokuapp.com)
+[🔥 Live Version](https://havo-backend.onrender.com/)
 
 # Project setup
 
