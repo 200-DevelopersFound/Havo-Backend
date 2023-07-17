@@ -1557,31 +1557,47 @@
           "200": {
             "description": "User Cateories",
             "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "_id": {
-                    "type": "string",
-                    "example": "61c8af95598a5a9b7a56ee92"
-                  },
-                  "title": {
-                    "type": "string",
-                    "example": "INTRO"
-                  },
-                  "dialogues": {
-                    "type": "array",
-                    "example": [
-                      "abcd"
-                    ],
-                    "items": {
-                      "type": "string"
+              "type": "object",
+              "properties": {
+                "categories": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "61ccb8d09a3e4ab430fe7b80"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "END"
+                      },
+                      "dialogues": {
+                        "type": "array",
+                        "example": [
+                          "yyyyyyy",
+                          "79",
+                          "77858779",
+                          "asd"
+                        ],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "__v": {
+                        "type": "number",
+                        "example": 4
+                      }
                     }
-                  },
-                  "__v": {
-                    "type": "number",
-                    "example": 1
                   }
+                },
+                "totalDialogues": {
+                  "type": "number",
+                  "example": 7
+                },
+                "totalCategories": {
+                  "type": "number",
+                  "example": 4
                 }
               },
               "xml": {
@@ -1682,35 +1698,22 @@
         ],
         "responses": {
           "201": {
-            "description": "User Cateories",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "_id": {
-                    "type": "string",
-                    "example": "61c8af95598a5a9b7a56ee92"
-                  },
-                  "title": {
-                    "type": "string",
-                    "example": "INTRO"
-                  },
-                  "dialogues": {
-                    "type": "array",
-                    "example": [],
-                    "items": {}
-                  },
-                  "__v": {
-                    "type": "number",
-                    "example": 1
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
+            "description": "Created",
+            "categories": [
+              {
+                "_id": "61ccb8d09a3e4ab430fe7b80",
+                "title": "END",
+                "dialogues": [
+                  "yyyyyyy",
+                  "79",
+                  "77858779",
+                  "asd"
+                ],
+                "__v": 4
               }
-            }
+            ],
+            "totalDialogues": 7,
+            "totalCategories": 4
           },
           "400": {
             "description": "User not found",
@@ -1811,31 +1814,47 @@
           "201": {
             "description": "User Cateories",
             "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "_id": {
-                    "type": "string",
-                    "example": "61c8af95598a5a9b7a56ee92"
-                  },
-                  "title": {
-                    "type": "string",
-                    "example": "INTRO"
-                  },
-                  "dialogues": {
-                    "type": "array",
-                    "example": [
-                      "abcd"
-                    ],
-                    "items": {
-                      "type": "string"
+              "type": "object",
+              "properties": {
+                "categories": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "61ccb8d09a3e4ab430fe7b80"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "END"
+                      },
+                      "dialogues": {
+                        "type": "array",
+                        "example": [
+                          "yyyyyyy",
+                          "79",
+                          "77858779",
+                          "asd"
+                        ],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "__v": {
+                        "type": "number",
+                        "example": 4
+                      }
                     }
-                  },
-                  "__v": {
-                    "type": "number",
-                    "example": 1
                   }
+                },
+                "totalDialogues": {
+                  "type": "number",
+                  "example": 7
+                },
+                "totalCategories": {
+                  "type": "number",
+                  "example": 4
                 }
               },
               "xml": {
